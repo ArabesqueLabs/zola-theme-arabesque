@@ -38,6 +38,7 @@ tags = ["design", "zola"]
 [extra]
 toc = true            # override extra.page.toc_min_headings
 image = "cover.png"   # the social image, beside the page
+image_alt = "What the image shows"
 +++
 ```
 

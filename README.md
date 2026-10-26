@@ -7,9 +7,12 @@ A theme for the static site generator [Zola](https://www.getzola.org), based on 
 calm, accessible (WCAG 2.2 AA as a floor), and bidirectional, in English and
 Arabic, light and dark, from the start.
 
-![The home page: the site's title and menu over the drawn pattern, a large heading, a lede, and a primary button beside a text link.](screenshot.png)
+<p>
+  <img src="https://raw.githubusercontent.com/ArabesqueLabs/zola-theme-arabesque/main/screenshots/light.png" width="49%" alt="A post in the light theme: the header with the site's name and menu, &quot;On this page&quot; beside the article, breadcrumbs, the title, a lede, the date and reading time, and the first section of text.">
+  <img src="https://raw.githubusercontent.com/ArabesqueLabs/zola-theme-arabesque/main/screenshots/dark.png" width="49%" alt="The same post in the dark theme.">
+</p>
 
-- **Every template a site needs:** a home page with a hero on the drawn pattern; sections that list their pages (dated, as articles; otherwise, as a list), paginated; pages with "On this page", breadcrumbs, terms and the pages either side; tags; an archive by year; search; and a page for when something isn't found.
+- **A range of templates for your site:** a home page with a hero on the drawn pattern; sections that list their pages (dated, as articles; otherwise, as a list), paginated; pages with "On this page", breadcrumbs, terms and the pages either side; tags; an archive by year; search; and a page for when something isn't found.
 - **Bidirectional:** each language has its own address and the header links each page to its translation. Right-to-left languages mirror, with logical properties only; numbers, code and the pattern don't.
 - **Light and dark:** follows the reader's system, with a button that cycles through system, light and dark, each with its own icon; the choice is remembered, with no flash.
 - **The design system's own components:** the site header, footer, breadcrumbs, pagination, "On this page", code blocks with a copy button, tables, notices, disclosures and more, written as their specs say. Markdown's code blocks and tables become them.
@@ -149,7 +152,34 @@ animate = true               # it draws itself in once (never under reduced moti
 | `extra.page.page_nav` | `true` | The pages either side: Newer and Older by date, Previous and Next otherwise |
 | `extra.page.back_to_top_after` | `0.5` | Show "Back to top" once the page has scrolled this many screens |
 
-In a page's front matter, under `[extra]`: `toc = true | false` overrides the contents, and `image = "cover.png"` (beside the page, in static/, or an address) is its social image. `draft = true` adds a Draft badge; `authors = [...]` names who wrote it.
+In a page's front matter, under `[extra]`: `toc = true | false` overrides the contents, and `image = "cover.png"` (beside the page, in static/, or an address) is its social image, with `image_alt` for its alt text. `draft = true` adds a Draft badge; `authors = [...]` names who wrote it.
+
+### Sharing and search
+
+Each page describes itself to the sites and apps that preview links (Open Graph, for Facebook, LinkedIn, Slack, Discord, Mastodon and most others; X's cards) and to search engines (schema.org JSON-LD: the site on the home page, a `BlogPosting` for each dated page, a `WebPage` or `CollectionPage` for the rest). With nothing set, the tags use each page's title, description, date, tags, authors and image, then the site's.
+
+```toml
+[extra.social]
+image = "social.png"                     # for pages without their own; best at 1200×630
+image_alt = "The site's name on the pattern"
+twitter_site = "@site"
+twitter_creator = "@you"
+fediverse_creator = "@you@example.social"
+publisher_type = "Person"                # or "Organization"
+same_as = ["https://github.com/you"]
+```
+
+| Key | Default | Does |
+|---|---|---|
+| `extra.social.enabled` | `true` | All of the tags; `false` for none |
+| `extra.social.image` | `""` | The image shared with a page that has none of its own: in static/, or an address |
+| `extra.social.image_alt` | `""` | What that image shows |
+| `extra.social.twitter_site` | `""` | The site's X account, `"@name"` |
+| `extra.social.twitter_creator` | `""` | The author's X account |
+| `extra.social.fediverse_creator` | `""` | The author's fediverse account, `"@name@example.social"`: Mastodon credits it on shared links |
+| `extra.social.schema_org` | `true` | The schema.org data |
+| `extra.social.publisher_type` | `"Person"` | Who publishes the site: `"Person"` or `"Organization"`, named by `extra.author`, then `author`, then the title |
+| `extra.social.same_as` | `[]` | Your profiles elsewhere, for schema.org's `sameAs` |
 
 ### Everything else
 
@@ -157,7 +187,6 @@ In a page's front matter, under `[extra]`: `toc = true | false` overrides the co
 |---|---|
 | `extra.search.page` | The search page (`"@/search.md"`); adds a search button to the header |
 | `extra.favicon` | Your icon, in static/; the pattern's star by default |
-| `extra.og_image` | The image shared with links to the site, in static/ |
 | `extra.author` | Who the copyright line names; `author`, then `title`, by default |
 | `extra.stylesheets` | Your own CSS files, in static/, loaded after the theme's |
 | `extra.rtl_languages` | Languages written right to left |
@@ -268,4 +297,7 @@ To move to a newer design system: `scripts/vendor-arabesque.sh 0.10.0`, then rea
 
 ## Licence
 
-The theme is [MIT licensed](LICENSE), as is the design system's code in `static/arabesque/` ([its licence](static/arabesque/LICENSE)). The fonts keep their own licences, the SIL Open Font License 1.1, whose texts are beside them in `static/arabesque/fonts/`. The Arabesque and Arabesque Labs logos aren't open source, and the theme doesn't include them: it shows your site's title, or your own logo.
+The theme is [MIT licensed](LICENSE), as is the design system's code in
+`static/arabesque/` ([its licence](static/arabesque/LICENSE)). The fonts keep
+their own licences, the SIL Open Font License 1.1, whose texts are beside them
+in `static/arabesque/fonts/`. 

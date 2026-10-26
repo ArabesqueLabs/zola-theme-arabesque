@@ -43,6 +43,7 @@ The home page is your `content/_index.md`. Its hero comes from `[extra.hero]` in
 title = "My site"
 
 [extra.hero]
+eyebrow = "Optional words above the title"
 title = "One sentence that says what this is."
 lede = "One or two more, to say it in full."
 caption = "What the teal tile in the pattern is."
@@ -104,7 +105,7 @@ animate = true               # let it draw itself in, once
 | `extra.page.page_nav` | true | Links to the pages either side, at the foot |
 | `extra.page.back_to_top_after` | 0.5 | Show "Back to top" once the page has scrolled this many screens |
 
-A page can show or hide its own contents with `toc = true` or `toc = false` under `[extra]` in its front matter, and set a social image with `image = "cover.png"`.
+A page can show or hide its own contents with `toc = true` or `toc = false` under `[extra]` in its front matter, and set a social image with `image = "cover.png"`, with `image_alt` for what it shows.
 
 ## The footer
 
@@ -131,13 +132,29 @@ credit = false     # "Built with Zola and the Arabesque design system"
 feed_link = true   # an icon linking the Atom feed, after the links
 ```
 
+## Sharing and search
+
+Each page describes itself to the sites and apps that preview links: Open Graph (Facebook, LinkedIn, Slack, Discord, Mastodon and most others) and X's cards. It describes itself to search engines too, with schema.org data: the site on the home page, a blog post for each dated page, and a web page for the rest. With nothing set, the tags use each page's title, description, date, tags, authors and image, then the site's. Set only what you want to add:
+
+```toml
+[extra.social]
+image = "social.png"                     # for pages without their own; best at 1200×630
+image_alt = "The site's name on the pattern"
+twitter_site = "@site"                   # the site's X account
+twitter_creator = "@you"                 # the author's
+fediverse_creator = "@you@example.social"  # Mastodon credits it on shared links
+publisher_type = "Person"                # or "Organization"
+same_as = ["https://github.com/you"]     # your profiles elsewhere
+```
+
+`enabled = false` turns all of the tags off, and `schema_org = false` just the schema.org data.
+
 ## Everything else
 
 | Key | Does |
 |---|---|
 | `extra.search.page` | The search page (`"@/search.md"`): adds a search button to the header |
 | `extra.favicon` | Your own icon, in static/; the theme's star by default |
-| `extra.og_image` | The image shared with links to the site, in static/ |
 | `extra.author` | Who the copyright line names; `author` by default, then the title |
 | `extra.stylesheets` | Your own CSS files, in static/, loaded after the theme's |
 | `extra.rtl_languages` | Languages written right to left |

@@ -11,7 +11,7 @@ Arabesque is the Arabesque Labs design system: tokens, CSS and a few small helpe
 
 ## What's in it
 
-Every template a Zola site needs: the home page with its hero, sections that list their pages, pages with "On this page" beside them, tags, an archive, search and a page for when something isn't found. Each one is built from the system's components, as their specs describe them, and nothing else.
+A range of templates for a Zola site: the home page with its hero, sections that list their pages, pages with "On this page" beside them, tags, an archive, search and a page for when something isn't found. Each one is built from the system's components, as their specs describe them, and nothing else.
 
 {{ stats(labels=["Page templates", "Shortcodes", "Languages, to start"], values=["8", "19", "2"]) }}
 

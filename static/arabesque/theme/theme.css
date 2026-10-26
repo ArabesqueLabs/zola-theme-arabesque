@@ -14,6 +14,9 @@ main:focus { outline: none; }
    light or dark. */
 .zt-theme .al-icon { display: none; }
 :root:not([data-theme]) .zt-theme__system, :root[data-theme="light"] .zt-theme__light, :root[data-theme="dark"] .zt-theme__dark { display: block; }
+/* Each mode has its own icon, so not the system's half-turn in dark (more
+   specific than arabesque.css's rule). */
+:root:not([data-theme="none"]) [data-theme-toggle].zt-theme .al-icon { rotate: none; }
 
 /* Below the sticky header (5rem, 4rem under md): where a link to a heading lands. */
 :root { --zt-header: 5rem; }
