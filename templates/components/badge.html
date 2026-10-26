@@ -1,0 +1,5 @@
+{#- A badge (components/badge): {{ <badge text="Experimental" kind="warning" /> }}
+    kind: neutral (the default), accent, success, warning, danger, info or outline. -#}
+{%- component badge(text: string, kind: string = "neutral") -%}
+<span class="al-badge{% if kind != 'neutral' %} al-badge--{{ kind }}{% endif %}">{{ text | escape }}</span>
+{%- endcomponent badge -%}

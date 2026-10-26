@@ -1,5 +1,4 @@
 {%- extends "page.html" -%}
-{%- import "macros.html" as m -%}
 
 {#- Every page of a section, by year. Use it for a page:
       +++
@@ -31,7 +30,7 @@
             <span class="al-list__title">{{ p.title }}</span>
             {%- if p.description %}<span class="al-list__description">{{ p.description }}</span>{% endif %}
           </span>
-          <span class="al-list__end">{{ p.date | date(format=t.date_format | replace(from=" %Y", to=""), locale=t.date_locale) }}</span>
+          <span class="al-list__end">{{ p.date | date(format=t.date_format | replace(from=" y", to=""), locale=t.date_locale ~ "-u-nu-latn") }}</span>
         </a>
       </li>
       {%- endfor %}

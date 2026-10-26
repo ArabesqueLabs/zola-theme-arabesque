@@ -92,14 +92,19 @@ function initPatterns() {
 }
 
 // Code blocks: Markdown's <pre> becomes the system's code block (components/code),
-// with a bar naming it (a caption from the code shortcode, or its language)
-// and a copy button. Always left to right, focusable so it can be scrolled.
+// with a bar naming it (a caption from the code component, or its language;
+// Zola calls a block without one "plain") and a copy button. Always left to
+// right, focusable so it can be scrolled.
 function enhanceCode(root = document) {
   for (const pre of root.querySelectorAll(".zt-prose pre")) {
     if (pre.closest(".al-code, .zt-mermaid")) continue;
     const code = pre.querySelector("code");
+    const lang = pre.dataset.lang || code?.dataset.lang || "";
     const caption = pre.closest("[data-caption]")?.dataset.caption
-      || pre.dataset.lang || code?.dataset.lang || "";
+      || (lang === "plain" ? "" : lang);
+    // Without Zola's highlighting, the system's script colours what it
+    // knows: it reads the language from data-language.
+    if (code && lang && !code.children.length) code.dataset.language = lang;
     pre.classList.add("al-code__pre");
     pre.setAttribute("dir", "ltr");
     pre.tabIndex = 0;
@@ -117,7 +122,7 @@ function enhanceCode(root = document) {
     const bar = el("div", { class: "al-code__bar" });
     if (caption) bar.append(el("span", { class: "al-code__caption", dir: "ltr" }, caption));
     // With line numbers (linenos), the text would copy them too.
-    if (!pre.querySelector("table")) bar.append(copy);
+    if (!pre.querySelector("table, .giallo-ln")) bar.append(copy);
 
     const block = el("div", { class: "al-code" });
     pre.replaceWith(block);
@@ -181,7 +186,7 @@ function initBackToTop() {
   });
 }
 
-// Mermaid diagrams (the mermaid shortcode): Mermaid's script loads only on
+// Mermaid diagrams (the mermaid component): Mermaid's script loads only on
 // a page that has one, and draws each in the system's colours, read from
 // its tokens; again when the theme changes. If it can't load, the
 // diagram's source stays, as text.
@@ -252,10 +257,13 @@ async function initMermaid() {
   matchMedia("(prefers-color-scheme: dark)").addEventListener("change", draw);
 }
 
-// Instagram's script swaps its embed for an iframe with no title; give it
-// one, so a screen reader can say what the frame is.
+// Instagram's script, loaded once on a page with a post, swaps each embed
+// for an iframe with no title; give it one, so a screen reader can say what
+// the frame is.
 function nameEmbeds() {
-  for (const box of document.querySelectorAll(".zt-embed--instagram")) {
+  const boxes = document.querySelectorAll(".zt-embed--instagram");
+  if (boxes.length) document.head.append(el("script", { src: "https://www.instagram.com/embed.js" }));
+  for (const box of boxes) {
     const name = () => {
       for (const frame of box.querySelectorAll("iframe:not([title])")) frame.title = say("instagram", "Instagram post");
     };

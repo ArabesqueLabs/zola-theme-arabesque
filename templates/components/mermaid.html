@@ -1,12 +1,14 @@
 {#- A Mermaid diagram, drawn in the browser in the page's theme, and drawn
     again when the reader switches between light and dark:
-    {% mermaid(label="How a page is built") %}
+    {% <mermaid label="How a page is built"> %}
     flowchart LR
       A[Markdown] --> B[Zola] --> C[HTML]
-    {% end %}
+    {% </mermaid> %}
     label  (string, optional) What the diagram shows, for screen readers.
     Mermaid's script (about 1 MB) loads from jsDelivr, only on pages that
     have a diagram. -#}
-<figure class="zt-mermaid"{% if label is defined %} role="img" aria-label="{{ label }}"{% endif %}>
-  <pre class="zt-mermaid__source" dir="ltr">{{ body | trim }}</pre>
+{%- component mermaid(label: string = "") -%}
+<figure class="zt-mermaid"{% if label %} role="img" aria-label="{{ label | escape }}"{% endif %}>
+  <pre class="zt-mermaid__source" dir="ltr">{{ body | trim | escape }}</pre>
 </figure>
+{%- endcomponent mermaid -%}

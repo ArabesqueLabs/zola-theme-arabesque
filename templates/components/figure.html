@@ -1,0 +1,11 @@
+{#- An image with its caption: {{ <figure src="cover.jpg" alt="What it shows" caption="Markdown" /> }}
+    src is beside the page (a page bundle), a path in static/ ("/img/x.png"), or a URL. -#}
+{%- component figure(src: string, alt: string = "", caption: string = "", width = none, height = none) -%}
+{%- if src is starting_with(pat="/") %}{% set url = get_url(path=src) %}{% else %}{% set url = src %}{% endif -%}
+<figure class="zt-figure">
+  <img src="{{ url | safe }}" alt="{{ alt | escape }}" loading="lazy" decoding="async"{% if width %} width="{{ width }}"{% endif %}{% if height %} height="{{ height }}"{% endif %}>
+  {%- if caption %}
+  <figcaption>{{ caption | markdown(inline=true) | safe }}</figcaption>
+  {%- endif %}
+</figure>
+{%- endcomponent figure -%}

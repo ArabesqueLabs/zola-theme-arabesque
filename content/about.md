@@ -9,9 +9,9 @@ Arabesque for Zola is a theme for [Zola](https://www.getzola.org), the static si
 
 Arabesque patterns look intricate, but they come from a few simple shapes and one rule, repeated with care. The system draws its pattern the same way, by rule, from the 4.8.8 tiling: octagons and squares, with strands leaving each edge's midpoint at a fixed angle.
 
-{% quote(name="The design system's principles", role="Arabesque") %}
+{% <quote name="The design system's principles" role="Arabesque"> %}
 The fewest steps to get something done, actions that say exactly what they do, and every consequence shown before it happens.
-{% end %}
+{% </quote> %}
 
 ## What it leaves out
 

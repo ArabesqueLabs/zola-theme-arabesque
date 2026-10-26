@@ -1,0 +1,11 @@
+{#- A link that looks like a button (components/button), or a text link on
+    to a next step: {{ <button url="@/blog/_index.md" text="Read the blog" style="primary" /> }}
+    style: primary, default, or arrow (a text link with an arrow). -#}
+{%- component button(url: string, text: string, style: string = "primary", @lang: string) -%}
+{%- set href = <zt.url path={url} /> -%}
+{%- if style == "arrow" -%}
+<a class="al-link al-link--arrow" href="{{ href | safe }}">{{ text | escape }}{{ <zt.icon name="arrow" class="al-mirror" /> }}</a>
+{%- else -%}
+<a class="al-button{% if style == 'primary' %} al-button--primary{% endif %}" href="{{ href | safe }}">{{ text | escape }}</a>
+{%- endif -%}
+{%- endcomponent button -%}

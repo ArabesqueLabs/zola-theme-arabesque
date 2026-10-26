@@ -1,0 +1,13 @@
+{#- A PDF in the page, with a link to download it, for browsers (most phones)
+    that can't show one: {{ <pdf src="report.pdf" title="The annual report" /> }}
+    src     (string) The PDF: beside the page, in static/ ("/files/x.pdf"), or an address.
+    title   (string, optional) What it is, for screen readers and the link.
+    height  (string, optional) Its height. Default "50rem". -#}
+{%- component pdf(src: string, title: string = "", height: string = "50rem", @config: map, @lang: string) -%}
+{%- set t = config.extra.i18n | get(key=lang, default=config.extra.i18n.en) -%}
+{%- if src is starting_with(pat="/") %}{% set url = get_url(path=src) %}{% else %}{% set url = src %}{% endif -%}
+<figure class="zt-embed zt-embed--pdf" dir="ltr">
+  <iframe src="{{ url | safe }}" title="{{ title | escape if title else t.pdf }}" loading="lazy" style="block-size: {{ height | escape }}"></iframe>
+  <figcaption dir="auto"><a class="al-link" href="{{ url | safe }}" download>{{ <zt.icon name="file" class="al-icon--sm" /> }}{{ t.pdf_download }}{% if title %}: {{ title | escape }}{% endif %}</a></figcaption>
+</figure>
+{%- endcomponent pdf -%}

@@ -1,5 +1,5 @@
 {#- In <head>, after the title. -#}
-{%- set description = config.description | default(value="") -%}
+{%- set description = config.description or "" -%}
 {%- if current is defined and current.description %}{% set description = current.description %}{% endif -%}
 {%- set og_title = config.title -%}
 {%- if current is defined and current.title %}{% set og_title = current.title %}{% endif %}
@@ -24,7 +24,7 @@
   {#- The saved theme, before first paint, so there's no flash. #}
   <script>try { const t = localStorage.getItem("al-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch {}</script>
   {%- set favicon = config.extra.favicon | default(value="arabesque/theme/favicon.svg") %}
-  <link rel="icon" href="{{ get_url(path=favicon) }}"{% if favicon is ending_with(".svg") %} type="image/svg+xml"{% endif %}>
+  <link rel="icon" href="{{ get_url(path=favicon) }}"{% if favicon is ending_with(pat=".svg") %} type="image/svg+xml"{% endif %}>
   <link rel="stylesheet" href="{{ get_url(path='arabesque/fonts/fonts.css') }}">
   <link rel="stylesheet" href="{{ get_url(path='arabesque/arabesque.css', cachebust=true) }}">
   <link rel="stylesheet" href="{{ get_url(path='arabesque/theme/theme.css', cachebust=true) }}">
@@ -33,7 +33,7 @@
   {%- endfor %}
   {%- if config.generate_feeds %}
   {%- for feed in config.feed_filenames %}
-  <link rel="alternate" type="application/{% if feed is containing('rss') %}rss{% else %}atom{% endif %}+xml" title="{{ config.title }}" href="{{ get_url(path=feed, lang=lang) | safe }}">
+  <link rel="alternate" type="application/{% if feed is containing(pat='rss') %}rss{% else %}atom{% endif %}+xml" title="{{ config.title }}" href="{{ get_url(path=feed, lang=lang) | safe }}">
   {%- endfor %}
   {%- endif %}
   {%- set social = config.extra.social %}
@@ -45,8 +45,8 @@
   {%- if current is defined and current.extra.image %}{% set image = current.extra.image %}{% set image_alt = current.extra.image_alt | default(value="") %}{% endif -%}
   {%- set image_url = "" -%}
   {%- if image %}
-  {%- if image is starting_with("http") %}{% set image_url = image %}
-  {%- elif current is defined and current.extra.image and not image is starting_with("/") %}{% set image_url = current.permalink ~ image %}
+  {%- if image is starting_with(pat="http") %}{% set image_url = image %}
+  {%- elif current is defined and current.extra.image and not image is starting_with(pat="/") %}{% set image_url = current.permalink ~ image %}
   {%- else %}{% set image_url = get_url(path=image) %}{% endif %}
   {%- endif %}
   {%- set is_home = current is defined and (current.path == "/" or current.path == "/" ~ lang ~ "/") %}
@@ -84,16 +84,16 @@
   <meta name="fediverse:creator" content="{{ social.fediverse_creator }}">
   {%- endif %}
   {%- if is_post %}
-  <meta property="article:published_time" content="{{ page.date | date(format='%+') }}">
+  <meta property="article:published_time" content="{{ page.date | date(format='%Y-%m-%dT%H:%M:%S%:z') }}">
   {%- if page.updated %}
-  <meta property="article:modified_time" content="{{ page.updated | date(format='%+') }}">
+  <meta property="article:modified_time" content="{{ page.updated | date(format='%Y-%m-%dT%H:%M:%S%:z') }}">
   {%- endif %}
   {%- for tag in page.taxonomies.tags | default(value=[]) %}
   <meta property="article:tag" content="{{ tag }}">
   {%- endfor %}
   {%- endif %}
   {%- if social.schema_org | default(value=true) and current is defined %}
-  {%- set site_author = config.extra.author | default(value=config.author | default(value=config.title)) %}
+  {%- set site_author = config.extra.author or config.author or config.title %}
   {%- set same_as = social.same_as | default(value=[]) %}
   {%- set authors = [site_author] %}
   {%- if page is defined and page.authors | length > 0 %}{% set authors = page.authors %}{% endif %}
@@ -104,18 +104,18 @@
     "@context": "https://schema.org",
     {%- if is_home %}
     "@type": "WebSite",
-    "name": {{ config.title | json_encode | replace(from="<", to="\u003c") | safe }},
+    "name": {{ config.title | json_encode | replace(from="<", to="\\u003c") | safe }},
     "url": {{ current.permalink | json_encode | safe }},
     {%- else %}
     "@type": "{% if is_post %}BlogPosting{% elif page is defined %}WebPage{% else %}CollectionPage{% endif %}",
     {%- if is_post %}
-    "headline": {{ og_title | json_encode | replace(from="<", to="\u003c") | safe }},
-    "datePublished": "{{ page.date | date(format='%+') }}",
+    "headline": {{ og_title | json_encode | replace(from="<", to="\\u003c") | safe }},
+    "datePublished": "{{ page.date | date(format='%Y-%m-%dT%H:%M:%S%:z') }}",
     {%- if page.updated %}
-    "dateModified": "{{ page.updated | date(format='%+') }}",
+    "dateModified": "{{ page.updated | date(format='%Y-%m-%dT%H:%M:%S%:z') }}",
     {%- endif %}
     {%- if page.taxonomies.tags | default(value=[]) | length > 0 %}
-    "keywords": {{ page.taxonomies.tags | json_encode | replace(from="<", to="\u003c") | safe }},
+    "keywords": {{ page.taxonomies.tags | json_encode | replace(from="<", to="\\u003c") | safe }},
     {%- endif %}
     "author": [
       {%- for name in authors %}
@@ -123,14 +123,14 @@
       {%- endfor %}
     ],
     {%- else %}
-    "name": {{ og_title | json_encode | replace(from="<", to="\u003c") | safe }},
+    "name": {{ og_title | json_encode | replace(from="<", to="\\u003c") | safe }},
     {%- endif %}
     "url": {{ current.permalink | json_encode | safe }},
     "mainEntityOfPage": {{ current.permalink | json_encode | safe }},
-    "isPartOf": {"@type": "WebSite", "name": {{ config.title | json_encode | replace(from="<", to="\u003c") | safe }}, "url": {{ home_url | json_encode | safe }}},
+    "isPartOf": {"@type": "WebSite", "name": {{ config.title | json_encode | replace(from="<", to="\\u003c") | safe }}, "url": {{ home_url | json_encode | safe }}},
     {%- endif %}
     {%- if description %}
-    "description": {{ description | json_encode | replace(from="<", to="\u003c") | safe }},
+    "description": {{ description | json_encode | replace(from="<", to="\\u003c") | safe }},
     {%- endif %}
     {%- if image_url %}
     "image": {{ image_url | json_encode | safe }},
@@ -138,7 +138,7 @@
     "inLanguage": "{{ lang }}",
     "publisher": {
       "@type": "{{ social.publisher_type | default(value='Person') }}",
-      "name": {{ site_author | json_encode | replace(from="<", to="\u003c") | safe }}
+      "name": {{ site_author | json_encode | replace(from="<", to="\\u003c") | safe }}
       {%- if same_as | length > 0 %},
       "sameAs": {{ same_as | json_encode | safe }}
       {%- endif %}

@@ -17,11 +17,16 @@ taxonomies = [
 ]
 
 [markdown]
-highlight_code = true
-# The theme colours code with the system's syntax roles (theme.css):
-highlight_theme = "css"
 smart_punctuation = true
 external_links_no_referrer = true
+
+# Code in the system's syntax colours, light and dark, following the theme
+# button. A site using the theme points to them in themes/arabesque/.
+[markdown.highlighting]
+light_theme = "arabesque-light"
+dark_theme = "arabesque-dark"
+extra_themes = ["highlighting/arabesque-light.json", "highlighting/arabesque-dark.json"]
+add_color_scheme = false
 
 [search]
 index_format = "fuse_json"
@@ -230,7 +235,7 @@ note = "Note"
 done = "Done"
 warning = "Warning"
 error = "Error"
-date_format = "%-d %B %Y"
+date_format = "d MMMM y"
 date_locale = "en_GB"
 taxonomy_tags = "Tags"
 taxonomy_categories = "Categories"
@@ -306,7 +311,7 @@ note = "ملاحظة"
 done = "تم"
 warning = "تنبيه"
 error = "خطأ"
-date_format = "%-d %B %Y"
+date_format = "d MMMM y"
 date_locale = "ar_EG"
 taxonomy_tags = "الوسوم"
 taxonomy_categories = "التصنيفات"
@@ -336,8 +341,8 @@ name = "Projects"
 url = "@/projects/_index.md"
 
 [[extra.menu.en]]
-name = "Shortcodes"
-url = "@/docs/shortcodes.md"
+name = "Components"
+url = "@/docs/components.md"
 
 [[extra.menu.en]]
 name = "Docs"
@@ -356,8 +361,8 @@ name = "المشاريع"
 url = "@/projects/_index.md"
 
 [[extra.menu.ar]]
-name = "الرموز القصيرة"
-url = "@/docs/shortcodes.md"
+name = "المكوّنات"
+url = "@/docs/components.md"
 
 [[extra.menu.ar]]
 name = "الدليل"

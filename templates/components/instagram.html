@@ -1,0 +1,13 @@
+{#- An Instagram post, embedded by Instagram's script (theme.js loads it,
+    once): until it loads, or without it, a link to the post:
+    {{ <instagram id="De95KnVivAf" /> }}
+    id  (string) The post's ID, from instagram.com/p/<id>/. -#}
+{%- component instagram(id: string, @config: map, @lang: string) -%}
+{%- set t = config.extra.i18n | get(key=lang, default=config.extra.i18n.en) -%}
+{%- set url = "https://www.instagram.com/p/" ~ id ~ "/" -%}
+<div class="zt-embed zt-embed--instagram">
+  <blockquote class="instagram-media zt-instagram" data-instgrm-permalink="{{ url | escape }}" data-instgrm-version="14" data-instgrm-captioned>
+    <a class="al-link al-link--arrow" href="{{ url | escape }}">{{ t.instagram_view }}{{ <zt.icon name="arrow" class="al-mirror" /> }}</a>
+  </blockquote>
+</div>
+{%- endcomponent instagram -%}

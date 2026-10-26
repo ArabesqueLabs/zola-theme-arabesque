@@ -9,8 +9,8 @@
 <div class="zt-hero__media zt-hero__media--{{ style }}">
   {%- if hero.image is defined %}
   {%- set src = hero.image %}
-  {%- if src is starting_with("http") %}{% set url = src %}
-  {%- elif src is ending_with(".svg") %}{% set url = get_url(path=src) %}
+  {%- if src is starting_with(pat="http") %}{% set url = src %}
+  {%- elif src is ending_with(pat=".svg") %}{% set url = get_url(path=src) %}
   {%- elif style == "portrait" %}{% set resized = resize_image(path=src, width=640, height=640, op="fill") %}{% set url = resized.url %}
   {%- else %}{% set resized = resize_image(path=src, width=640, op="fit_width") %}{% set url = resized.url %}{% endif %}
   <img class="zt-hero__image" src="{{ url | safe }}" alt="{{ hero.image_alt | default(value='') }}" decoding="async" fetchpriority="high">

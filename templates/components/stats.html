@@ -1,0 +1,13 @@
+{#- Figures a page leads with (components/card, stats), two to four:
+    {{ <stats labels={["Components", "Contrast pairs"]} values={["42", "112"]} notes={["", "none failing"]} /> }} -#}
+{%- component stats(labels: array, values: array, notes: array = []) -%}
+<div class="al-stats zt-stats">
+  {%- for label in labels %}
+  <div class="al-stat">
+    <span class="al-stat__label">{{ label | escape }}</span>
+    <span class="al-stat__value"><bdi>{{ values[loop.index0] | escape }}</bdi></span>
+    {%- if notes | length > loop.index0 and notes[loop.index0] %}<span class="al-stat__note">{{ notes[loop.index0] | escape }}</span>{% endif %}
+  </div>
+  {%- endfor %}
+</div>
+{%- endcomponent stats -%}

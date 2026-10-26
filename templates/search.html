@@ -1,5 +1,4 @@
 {%- extends "page.html" -%}
-{%- import "macros.html" as m -%}
 
 {#- Search, in the browser, over Zola's index for this language. Use it for
     a page (content/search.md, and search.ar.md and so on):
@@ -22,9 +21,9 @@
   <form class="zt-search" role="search" action="{{ page.permalink | safe }}" data-search-index="{{ get_url(path='search_index.' ~ lang ~ '.json') | safe }}">
     <label class="al-label" for="zt-q">{{ t.search_label }}</label>
     <div class="al-search">
-      {{ m::icon(name="search") }}
+      {{ <zt.icon name="search" /> }}
       <input class="al-input" id="zt-q" name="q" type="search" autocomplete="off" spellcheck="false" enterkeyhint="search">
-      <button type="button" class="al-search__clear" aria-label="{{ t.search_clear }}" hidden>{{ m::icon(name="close", class="al-icon--sm") }}</button>
+      <button type="button" class="al-search__clear" aria-label="{{ t.search_clear }}" hidden>{{ <zt.icon name="close" class="al-icon--sm" /> }}</button>
     </div>
   </form>
   <p class="zt-search__status al-muted" role="status" aria-live="polite" data-search-status></p>
