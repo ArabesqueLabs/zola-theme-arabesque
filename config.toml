@@ -110,6 +110,34 @@ back_to_top_after = 0.5
 # and `[search] index_format = "fuse_json"` in config.toml.
 page = "@/search.md"
 
+[extra.social]
+# Tags that describe each page to the sites and apps that preview links:
+# Open Graph (Facebook, LinkedIn, Slack, Discord, Mastodon…), X's cards, and
+# schema.org data for search engines. With nothing else set, they use each
+# page's title, description, date, tags, authors and image, then the site's.
+enabled = true
+# The image shown with a link to a page that has none of its own (`image`
+# under a page's [extra]): a path in static/ or an address, best at
+# 1200×630; "" for none. A page's own alt text is `image_alt` beside `image`.
+image = ""
+# What the image shows, for people who can't see it.
+image_alt = ""
+# The site's X (Twitter) account, and the author's, as "@name".
+twitter_site = ""
+twitter_creator = ""
+# The author's fediverse account, as "@name@example.social": Mastodon
+# credits them on links to the site.
+fediverse_creator = ""
+# schema.org data (JSON-LD): the site on the home page, a blog post for each
+# dated page, a web page for the rest.
+schema_org = true
+# Who publishes the site, for schema.org: "Person" or "Organization". It's
+# named by `extra.author`, then `author`, then the site's title.
+publisher_type = "Organization"
+# Your profiles elsewhere, for schema.org's sameAs:
+#   same_as = ["https://github.com/you", "https://example.social/@you"]
+same_as = ["https://github.com/ArabesqueLabs"]
+
 [extra.footer]
 # Show the site's name (and logo) in the footer; the header already has it.
 lockup = false

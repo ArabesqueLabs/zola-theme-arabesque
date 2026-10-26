@@ -36,28 +36,54 @@
   <link rel="alternate" type="application/{% if feed is containing('rss') %}rss{% else %}atom{% endif %}+xml" title="{{ config.title }}" href="{{ get_url(path=feed, lang=lang) | safe }}">
   {%- endfor %}
   {%- endif %}
+  {%- set social = config.extra.social %}
+  {%- if social.enabled %}
+  {#- Open Graph (Facebook, LinkedIn, Slack, Mastodon and most others),
+      X's cards, and schema.org: from the page, then [extra.social]. #}
+  {%- set image = social.image -%}
+  {%- set image_alt = social.image_alt -%}
+  {%- if current is defined and current.extra.image %}{% set image = current.extra.image %}{% set image_alt = current.extra.image_alt | default(value="") %}{% endif -%}
+  {%- set image_url = "" -%}
+  {%- if image %}
+  {%- if image is starting_with("http") %}{% set image_url = image %}
+  {%- elif current is defined and current.extra.image and not image is starting_with("/") %}{% set image_url = current.permalink ~ image %}
+  {%- else %}{% set image_url = get_url(path=image) %}{% endif %}
+  {%- endif %}
+  {%- set is_home = current is defined and (current.path == "/" or current.path == "/" ~ lang ~ "/") %}
+  {%- set is_post = page is defined and page.date %}
   <meta property="og:site_name" content="{{ config.title }}">
   <meta property="og:title" content="{{ og_title }}">
   {%- if description %}
   <meta property="og:description" content="{{ description }}">
   {%- endif %}
-  <meta property="og:type" content="{% if page is defined %}article{% else %}website{% endif %}">
+  <meta property="og:type" content="{% if is_post %}article{% else %}website{% endif %}">
   <meta property="og:locale" content="{{ t.date_locale }}">
   {%- if current is defined %}
+  {%- for tr in current.translations %}{% if tr.lang != lang %}
+  <meta property="og:locale:alternate" content="{{ config.extra.i18n | get(key=tr.lang, default=t) | get(key='date_locale') }}">
+  {%- endif %}{% endfor %}
   <meta property="og:url" content="{{ current.permalink | safe }}">
   {%- endif %}
-  {%- set image = config.extra.og_image | default(value="") -%}
-  {%- if current is defined and current.extra.image %}{% set image = current.extra.image %}{% endif -%}
-  {%- if image %}
-  {%- if image is starting_with("http") %}{% set image_url = image %}
-  {%- elif current is defined and current.extra.image and not image is starting_with("/") %}{% set image_url = current.permalink ~ image %}
-  {%- else %}{% set image_url = get_url(path=image) %}{% endif %}
+  {%- if image_url %}
   <meta property="og:image" content="{{ image_url | safe }}">
+  {%- if image_alt %}
+  <meta property="og:image:alt" content="{{ image_alt }}">
+  <meta name="twitter:image:alt" content="{{ image_alt }}">
+  {%- endif %}
   <meta name="twitter:card" content="summary_large_image">
   {%- else %}
   <meta name="twitter:card" content="summary">
   {%- endif %}
-  {%- if page is defined and page.date %}
+  {%- if social.twitter_site | default(value="") %}
+  <meta name="twitter:site" content="{{ social.twitter_site }}">
+  {%- endif %}
+  {%- if social.twitter_creator | default(value="") %}
+  <meta name="twitter:creator" content="{{ social.twitter_creator }}">
+  {%- endif %}
+  {%- if social.fediverse_creator | default(value="") %}
+  <meta name="fediverse:creator" content="{{ social.fediverse_creator }}">
+  {%- endif %}
+  {%- if is_post %}
   <meta property="article:published_time" content="{{ page.date | date(format='%+') }}">
   {%- if page.updated %}
   <meta property="article:modified_time" content="{{ page.updated | date(format='%+') }}">
@@ -65,4 +91,59 @@
   {%- for tag in page.taxonomies.tags | default(value=[]) %}
   <meta property="article:tag" content="{{ tag }}">
   {%- endfor %}
+  {%- endif %}
+  {%- if social.schema_org | default(value=true) and current is defined %}
+  {%- set site_author = config.extra.author | default(value=config.author | default(value=config.title)) %}
+  {%- set same_as = social.same_as | default(value=[]) %}
+  {%- set authors = [site_author] %}
+  {%- if page is defined and page.authors | length > 0 %}{% set authors = page.authors %}{% endif %}
+  {#- json_encode quotes and escapes each value; "<" is escaped too, so no
+      value can close the script. #}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    {%- if is_home %}
+    "@type": "WebSite",
+    "name": {{ config.title | json_encode | replace(from="<", to="\u003c") | safe }},
+    "url": {{ current.permalink | json_encode | safe }},
+    {%- else %}
+    "@type": "{% if is_post %}BlogPosting{% elif page is defined %}WebPage{% else %}CollectionPage{% endif %}",
+    {%- if is_post %}
+    "headline": {{ og_title | json_encode | replace(from="<", to="\u003c") | safe }},
+    "datePublished": "{{ page.date | date(format='%+') }}",
+    {%- if page.updated %}
+    "dateModified": "{{ page.updated | date(format='%+') }}",
+    {%- endif %}
+    {%- if page.taxonomies.tags | default(value=[]) | length > 0 %}
+    "keywords": {{ page.taxonomies.tags | json_encode | replace(from="<", to="\u003c") | safe }},
+    {%- endif %}
+    "author": [
+      {%- for name in authors %}
+      {"@type": "Person", "name": {{ name | json_encode | replace(from="<", to="\\u003c") | safe }}}{% if not loop.last %},{% endif %}
+      {%- endfor %}
+    ],
+    {%- else %}
+    "name": {{ og_title | json_encode | replace(from="<", to="\u003c") | safe }},
+    {%- endif %}
+    "url": {{ current.permalink | json_encode | safe }},
+    "mainEntityOfPage": {{ current.permalink | json_encode | safe }},
+    "isPartOf": {"@type": "WebSite", "name": {{ config.title | json_encode | replace(from="<", to="\u003c") | safe }}, "url": {{ home_url | json_encode | safe }}},
+    {%- endif %}
+    {%- if description %}
+    "description": {{ description | json_encode | replace(from="<", to="\u003c") | safe }},
+    {%- endif %}
+    {%- if image_url %}
+    "image": {{ image_url | json_encode | safe }},
+    {%- endif %}
+    "inLanguage": "{{ lang }}",
+    "publisher": {
+      "@type": "{{ social.publisher_type | default(value='Person') }}",
+      "name": {{ site_author | json_encode | replace(from="<", to="\u003c") | safe }}
+      {%- if same_as | length > 0 %},
+      "sameAs": {{ same_as | json_encode | safe }}
+      {%- endif %}
+    }
+  }
+  </script>
+  {%- endif %}
   {%- endif %}
