@@ -16,6 +16,6 @@ The choice is kept in the browser; "as the system" keeps nothing. A small script
 
 The design system computes the contrast of every text and interface colour against every background it sits on, in both themes, and the build fails if one falls below its minimum. The theme adds no colours of its own: everything is a token.
 
-{% notice(kind="info", title="Forced colours") %}
+{% <notice kind="info" title="Forced colours"> %}
 With Windows' high contrast themes, the system hands its colours to the browser, and the pattern steps aside.
-{% end %}
+{% </notice> %}

@@ -1,0 +1,9 @@
+{#- A code block with a caption (its file's name) in its bar:
+    {% <code caption="config.toml"> %}
+    ```toml
+    theme = "arabesque"
+    ```
+    {% </code> %} -#}
+{%- component code(caption: string) -%}
+<div class="zt-code-caption" data-caption="{{ caption | escape }}">{{ body | markdown | safe }}</div>
+{%- endcomponent code -%}

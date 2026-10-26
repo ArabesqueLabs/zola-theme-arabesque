@@ -28,7 +28,7 @@
         <span class="al-list__title">{{ p.title }}</span>
         {%- if p.description %}<span class="al-list__description">{{ p.description }}</span>{% endif %}
       </span>
-      {{ m::icon(name="chevron", class="al-mirror zt-list__chevron") }}
+      {{ <zt.icon name="chevron" class="al-mirror zt-list__chevron" /> }}
     </a>
   </li>
   {%- endfor %}

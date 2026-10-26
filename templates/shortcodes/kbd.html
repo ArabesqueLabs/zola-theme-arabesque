@@ -1,2 +1,0 @@
-{#- Keys to press (components/kbd): {{ kbd(keys="Ctrl+K") }}, each key in its own box. -#}
-<span class="al-nowrap" dir="ltr">{% for key in keys | split(pat="+") %}<kbd class="al-kbd">{{ key }}</kbd>{% if not loop.last %}+{% endif %}{% endfor %}</span>

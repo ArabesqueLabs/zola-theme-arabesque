@@ -1,7 +1,7 @@
 {#- The footer (components/footer): the site's name, its links, and the legal line. -#}
 {%- set footer = config.extra.footer -%}
 {%- set links = footer.links | get(key=lang, default=[]) -%}
-{%- set owner = config.extra.author | default(value=config.author | default(value=config.title)) | escape -%}
+{%- set owner = (config.extra.author or config.author or config.title) | escape -%}
 {%- set owner = "<bdi>" ~ owner ~ "</bdi>" -%}
 {%- set year = now() | date(format="%Y") -%}
 {%- set year = "<bdi>" ~ year ~ "</bdi>" -%}
@@ -18,15 +18,15 @@
   {%- if links | length > 0 or feed %}
   <nav class="zt-footer-nav" aria-label="{{ t.footer_nav }}"><ul class="al-footer__links">
     {%- for item in links %}
-    {%- set href = m::url(path=item.url, lang=lang) %}
+    {%- set href = <zt.url path={item.url} /> %}
     {%- if item.icon is defined %}
-    <li><a class="zt-footer-icon" href="{{ href | safe }}" aria-label="{{ item.name }}" title="{{ item.name }}">{{ m::icon(name=item.icon) }}</a></li>
+    <li><a class="zt-footer-icon" href="{{ href | safe }}" aria-label="{{ item.name }}" title="{{ item.name }}">{{ <zt.icon name={item.icon} /> }}</a></li>
     {%- else %}
     <li><a href="{{ href | safe }}">{{ item.name }}</a></li>
     {%- endif %}
     {%- endfor %}
     {%- if feed %}
-    <li><a class="zt-footer-icon" href="{{ get_url(path=config.feed_filenames[0], lang=lang) | safe }}" aria-label="{{ t.feed }}" title="{{ t.feed }}">{{ m::icon(name="feed") }}</a></li>
+    <li><a class="zt-footer-icon" href="{{ get_url(path=config.feed_filenames[0], lang=lang) | safe }}" aria-label="{{ t.feed }}" title="{{ t.feed }}">{{ <zt.icon name="feed" /> }}</a></li>
     {%- endif %}
   </ul></nav>
   {%- endif %}

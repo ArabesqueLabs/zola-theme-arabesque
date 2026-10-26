@@ -1,0 +1,22 @@
+{#- The images beside a page (a page bundle: the post is a directory with
+    index.md and its images), as a grid of thumbnails, each linking to the
+    image itself: {{ <gallery /> }}
+    alts     (array, optional)  Each image's description, in the images' order
+                                (by file name): alts={["…", "…"]}. Without one,
+                                a link is named "Image 2 of 5".
+    columns  (number, optional) The narrowest a thumbnail gets, in rem. Default 16.
+    Thumbnails are made by Zola (resize_image), so a page loads small files. -#}
+{%- component gallery(alts: array = [], columns = none, @page: map, @config: map, @lang: string) -%}
+{%- set t = config.extra.i18n | get(key=lang, default=config.extra.i18n.en) -%}
+{%- set images = [asset for asset in page.assets | sort if asset is matching(pat="(?i)[.](jpe?g|png|webp|gif|avif)$")] -%}
+{%- if images | length > 0 %}
+<ul class="zt-gallery" role="list"{% if columns %} style="--zt-gallery-min: {{ columns }}rem"{% endif %}>
+  {%- for asset in images %}
+  {%- set alt = alts[loop.index0] if alts | length > loop.index0 else "" %}
+  {%- set label = t.gallery_item | replace(from="%n", to=loop.index ~ "") | replace(from="%total", to=images | length ~ "") %}
+  {%- if asset is matching(pat="(?i)[.](gif|avif)$") %}{% set thumb = get_url(path=asset) %}{% else %}{% set resized = resize_image(path=asset, width=640, height=480, op="fill") %}{% set thumb = resized.url %}{% endif %}
+  <li><a class="zt-gallery__link" href="{{ get_url(path=asset) | safe }}"{% if not alt %} aria-label="{{ label }}"{% endif %}><img src="{{ thumb | safe }}" alt="{{ alt | escape }}" loading="lazy" decoding="async" width="640" height="480"></a></li>
+  {%- endfor %}
+</ul>
+{%- endif %}
+{%- endcomponent gallery -%}

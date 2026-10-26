@@ -5,7 +5,7 @@
   <h2 class="zt-terms__title">{{ t | get(key="taxonomy_" ~ name, default=name | capitalize) }}</h2>
   <ul class="al-cluster zt-terms__list" role="list">
     {%- for term in terms %}
-    <li><a class="zt-term" href="{{ get_taxonomy_url(kind=name, name=term, lang=lang) | safe }}">{{ term }}</a></li>
+    <li><a class="zt-term" href="{{ get_taxonomy_url(kind=name, term=term, lang=lang) | safe }}">{{ term }}</a></li>
     {%- endfor %}
   </ul>
 </div>

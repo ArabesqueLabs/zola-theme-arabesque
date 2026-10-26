@@ -1,0 +1,12 @@
+{#- What someone said (components/card, quote), in their words:
+    {% <quote name="Lina Haddad" role="Designer, Example Ltd"> %}Their words.{% </quote> %} -#}
+{%- component quote(name: string = "", role: string = "") -%}
+<figure class="al-quote zt-quote">
+  <blockquote>{{ body | markdown | safe }}</blockquote>
+  {%- if name %}
+  <figcaption class="al-quote__by">
+    <span><span class="al-quote__name">{{ name | escape }}</span>{% if role %}<span class="al-quote__role">{{ role | escape }}</span>{% endif %}</span>
+  </figcaption>
+  {%- endif %}
+</figure>
+{%- endcomponent quote -%}

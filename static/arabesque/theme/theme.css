@@ -225,19 +225,19 @@ main:focus { outline: none; }
 .zt-prose .zola-anchor { margin-inline: var(--al-space-2); color: var(--al-color-text-muted); text-decoration: none; opacity: 0; transition: opacity var(--al-duration-fast) var(--al-ease-standard); }
 .zt-prose :is(h2, h3, h4):hover .zola-anchor, .zt-prose .zola-anchor:focus-visible { opacity: 1; }
 
-/* Code before the script turns it into the system's code block, or without it. */
+/* Code before the script turns it into the system's code block, or without it.
+   Zola writes the highlighting theme's text and ground on the block; the
+   system's are used instead (its syntax colours are in highlighting/). */
 .zt-prose pre { padding: var(--al-space-4); overflow-x: auto; border: var(--al-border-hairline) solid var(--al-color-line); border-radius: var(--al-radius-sm); background: var(--al-color-surface-sunk); font-family: var(--al-font-mono); font-size: var(--al-text-sm); line-height: 1.7; direction: ltr; text-align: start; tab-size: 2; }
-.zt-prose .al-code pre { padding: var(--al-space-4); border: 0; border-radius: 0; background: none; }
+.zt-prose pre.giallo { color: var(--al-color-text) !important; background-color: var(--al-color-surface-sunk) !important; }
+.zt-prose .al-code pre { padding: var(--al-space-4); border: 0; border-radius: 0; background: none !important; }
 .zt-prose pre code { font: inherit; }
-/* Zola's marked lines (hl_lines) look as the system's. */
-.zt-prose pre mark { display: inline-block; box-sizing: content-box; min-inline-size: 100%; margin-inline: calc(-1 * var(--al-space-4)); padding-inline: calc(var(--al-space-4) - 2px) var(--al-space-4); border-inline-start: 2px solid var(--al-color-accent); background: var(--al-color-accent-wash); color: inherit; }
+/* Zola's marked lines (hl_lines) look as the system's: with the colours
+   inline, a marked line is the one with a style; with classes, .z-hl. */
+.zt-prose pre .giallo-l:is([style], .z-hl) { display: inline-block; box-sizing: content-box; min-inline-size: 100%; margin-inline: calc(-1 * var(--al-space-4)); padding-inline: calc(var(--al-space-4) - 2px) var(--al-space-4); border-inline-start: 2px solid var(--al-color-accent); background: var(--al-color-accent-wash) !important; }
 /* Zola's line numbers (linenos). */
-.zt-prose pre table { border-collapse: collapse; border-spacing: 0; font: inherit; }
-.zt-prose pre :is(table, tbody, tr, td) { border: 0; background: none; }
-.zt-prose pre td { padding: 0; vertical-align: top; }
-.zt-prose pre td:first-child { padding-inline-end: var(--al-space-4); color: var(--al-color-text-muted); text-align: end; user-select: none; }
-.zt-prose pre td:first-child mark { margin: 0; padding: 0; border: 0; background: none; color: var(--al-color-accent); }
-.zt-prose pre td:last-child mark { margin-inline-start: 0; }
+.zt-prose pre .giallo-ln { display: inline-block; min-inline-size: 2ch; margin-inline-end: var(--al-space-4); color: var(--al-color-text-muted); text-align: end; user-select: none; }
+.zt-prose pre .giallo-l:is([style], .z-hl) .giallo-ln { color: var(--al-color-accent); }
 
 /* Tables before the script wraps them, or without it. */
 .zt-prose table:not(.al-table, pre table, .zt-embed table) { inline-size: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
@@ -265,7 +265,7 @@ main:focus { outline: none; }
 .zt-prose li:has(> input[type="checkbox"]) { list-style: none; margin-inline-start: -1.25em; }
 .zt-prose li > input[type="checkbox"] { margin-inline-end: var(--al-space-2); accent-color: var(--al-color-accent); }
 
-/* ---- the shortcodes ---------------------------------------------------------------------- */
+/* ---- the components ------------------------------------------------------------------------ */
 
 .zt-notice :is(p, ul, ol) { margin: 0; }
 .zt-notice .al-notice__body > * + * { margin-block-start: var(--al-space-1); }
@@ -359,19 +359,4 @@ main:focus { outline: none; }
 .zt-search__results mark { padding: 0; background: var(--al-color-accent-wash); color: inherit; }
 .zt-search__results .al-list__description { white-space: normal; }
 
-/* ---- syntax colour: Zola's classes (highlight_theme = "css") in the system's roles -------- */
-
-.z-code { color: var(--al-color-text); }
-.z-comment { color: var(--al-color-syntax-comment); font-style: italic; }
-.z-string, .z-string .z-punctuation { color: var(--al-color-syntax-string); }
-.z-constant.z-numeric, .z-constant.z-language, .z-constant.z-character.z-escape { color: var(--al-color-syntax-number); }
-.z-keyword, .z-storage { color: var(--al-color-syntax-keyword); }
-.z-keyword.z-operator, .z-punctuation { color: inherit; }
-.z-entity.z-name.z-function, .z-support.z-function, .z-variable.z-function { color: var(--al-color-syntax-function); }
-.z-entity.z-name.z-tag, .z-entity.z-name.z-type, .z-entity.z-name.z-class, .z-support.z-type, .z-support.z-class, .z-entity.z-other.z-inherited-class { color: var(--al-color-syntax-tag); }
-.z-entity.z-other.z-attribute-name, .z-support.z-type.z-property-name, .z-meta.z-mapping.z-key .z-string, .z-entity.z-name.z-tag.z-yaml, .z-meta.z-tag.z-table .z-entity, .z-variable.z-other.z-member { color: var(--al-color-syntax-attribute); }
-.z-markup.z-heading { color: var(--al-color-syntax-keyword); }
-.z-markup.z-bold { font-weight: var(--al-weight-semibold); }
-.z-markup.z-italic { font-style: italic; }
-.z-invalid { color: var(--al-color-danger); }
-@media (forced-colors: active) { .zt-prose pre [class*="z-"] { color: CanvasText; } }
+@media (forced-colors: active) { .zt-prose pre :is([class*="z-"], [style]) { color: CanvasText; } }

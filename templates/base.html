@@ -1,4 +1,3 @@
-{%- import "macros.html" as m -%}
 {#- What every template and partial can use: the theme's words in this
     language (t), the direction, the home page's address, and the page or
     section being shown (current), where there is one. -#}
@@ -26,7 +25,7 @@
 {% block main %}{% endblock main %}
 </main>
 {% include "partials/footer.html" %}
-<a class="al-back-to-top" href="#top" data-after="{{ config.extra.page.back_to_top_after }}">{{ m::icon(name="arrow-up") }}{{ t.back_to_top }}</a>
+<a class="al-back-to-top" href="#top" data-after="{{ config.extra.page.back_to_top_after }}">{{ <zt.icon name="arrow-up" /> }}{{ t.back_to_top }}</a>
 {% include "partials/scripts.html" %}
 {%- block scripts %}{% endblock scripts %}
 </body>

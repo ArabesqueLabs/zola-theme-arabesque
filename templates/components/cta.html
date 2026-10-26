@@ -1,0 +1,17 @@
+{#- A call to action (components/cta), on the quiet pattern:
+    {{ <cta title="Start your site" lede="One sentence." url="@/docs/_index.md" text="Read the guide" url2="https://…" text2="See the source" /> }} -#}
+{%- component cta(title: string, lede: string = "", url: string = "", text: string = "", url2: string = "", text2: string = "", @lang: string) -%}
+<section class="al-cta al-pattern al-pattern--quiet zt-cta">
+  <div class="al-pattern__art" aria-hidden="true" data-pattern></div>
+  <h2 class="al-cta__title">{{ title | escape }}</h2>
+  {%- if lede %}<p class="al-lede al-cta__lede">{{ lede | escape }}</p>{% endif %}
+  {%- if url %}
+  <div class="al-cta__actions">
+    <a class="al-button al-button--primary" href="{{ <zt.url path={url} /> | safe }}">{{ text | escape }}</a>
+    {%- if url2 %}
+    <a class="al-button" href="{{ <zt.url path={url2} /> | safe }}">{{ text2 | escape }}</a>
+    {%- endif %}
+  </div>
+  {%- endif %}
+</section>
+{%- endcomponent cta -%}

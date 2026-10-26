@@ -16,12 +16,12 @@ Arabic, light and dark, from the start.
 - **Bidirectional:** each language has its own address and the header links each page to its translation. Right-to-left languages mirror, with logical properties only; numbers, code and the pattern don't.
 - **Light and dark:** follows the reader's system, with a button that cycles through system, light and dark, each with its own icon; the choice is remembered, with no flash.
 - **The design system's own components:** the site header, footer, breadcrumbs, pagination, "On this page", code blocks with a copy button, tables, notices, disclosures and more, written as their specs say. Markdown's code blocks and tables become them.
-- **Nineteen shortcodes:** the design system's components Markdown can't write, and galleries, separators, Mermaid diagrams, and YouTube, PDF, Gist and Instagram embeds.
+- **Nineteen components for Markdown:** the design system's components Markdown can't write, and galleries, separators, Mermaid diagrams, and YouTube, PDF, Gist and Instagram embeds.
 - **Nothing from elsewhere, unless you embed it:** the fonts, CSS and scripts are in the theme. No tracking, no framework. The script only adds to pages that already work without it. Embeds (a video, a gist, a Mermaid diagram) load from their own sites, only on the pages that have them.
 
 ## Install
 
-Zola 0.19 or later. In your site:
+Zola 0.23 or later. In your site:
 
 ```sh
 git submodule add https://github.com/ArabesqueLabs/zola-theme-arabesque.git themes/arabesque
@@ -32,9 +32,12 @@ Then in `config.toml`:
 ```toml
 theme = "arabesque"
 
-[markdown]
-highlight_code = true
-highlight_theme = "css"   # code in the design system's syntax colours
+# Code in the design system's syntax colours, light and dark, as the theme button says.
+[markdown.highlighting]
+light_theme = "arabesque-light"
+dark_theme = "arabesque-dark"
+extra_themes = ["themes/arabesque/highlighting/arabesque-light.json", "themes/arabesque/highlighting/arabesque-dark.json"]
+add_color_scheme = false
 ```
 
 To see every template working, in English and Arabic, clone this repository and run `zola serve` in it: like the other themes in Zola's gallery, the repository is itself the demo site.
@@ -244,31 +247,33 @@ To change a template, copy it to your site's `templates/` with the same name; or
 {% block scripts %}<script src="/my.js" defer></script>{% endblock %}
 ```
 
-## Shortcodes
+## Components
 
-| Shortcode | Writes |
+Zola's components (since 0.23), to write in Markdown: `{{ <name … /> }}`, or `{% <name …> %}` and `{% </name> %}` around Markdown. A value that isn't a string goes in braces: `values={["8", "19"]}`, `open={true}`.
+
+| Component | Writes |
 |---|---|
-| `{% notice(kind="warning", title="…") %}Markdown{% end %}` | A notice: `info` (default), `success`, `warning`, `danger` (errors only) |
-| `{% details(summary="…", value="…", open=false) %}Markdown{% end %}` | A disclosure, with a value shown while closed |
-| `{% quote(name="…", role="…") %}Their words{% end %}` | A quote, with who said it |
-| `{% code(caption="config.toml") %}` *a fenced block* `{% end %}` | A code block with its file's name in the bar |
-| `{{ command(text="zola serve") }}` | One line to paste into a terminal, with a copy button |
-| `{{ stats(labels=[…], values=[…], notes=[…]) }}` | Two to four figures, side by side |
-| `{{ steps(titles=[…], bodies=[…]) }}` | Numbered stages |
-| `{{ cta(title, lede, url, text, url2, text2) }}` | A call to action on the quiet pattern |
-| `{{ button(url, text, style="primary") }}` | A link as a button: `primary`, `default`, or `arrow` (a text link) |
-| `{{ badge(text, kind) }}` | A status in a word: `neutral`, `accent`, `success`, `warning`, `danger`, `info`, `outline` |
-| `{{ kbd(keys="Ctrl+K") }}` | Keys to press |
-| `{{ figure(src, alt, caption, width, height) }}` | An image with its caption |
-| `{{ gallery(alts=[…], columns=16) }}` | The images beside a page (a page bundle), as thumbnails Zola makes |
-| `{{ separator(style="star", gap="lg") }}` | A break between scenes: 15 styles (`asterisks`, `dots`, `arabic`, `star`, `rule`, `gradient`…), with `gap`, `size`, `width`, `color` |
-| `{% mermaid(label="…") %}flowchart LR…{% end %}` | A Mermaid diagram in the theme's colours, redrawn when the theme changes (Mermaid loads from jsDelivr, on that page only) |
-| `{{ youtube(id, playlist, start, title) }}` | A YouTube video or playlist, 16:9, from the no-cookie domain |
-| `{{ pdf(src, title, height) }}` | A PDF in the page, with a link to download it |
-| `{{ gist(user, gist, file) }}` | A GitHub Gist (GitHub's script), with a link without JavaScript |
-| `{{ instagram(id) }}` | An Instagram post (Instagram's script), a link until it loads |
+| `{% <notice kind="warning" title="…"> %}Markdown{% </notice> %}` | A notice: `info` (default), `success`, `warning`, `danger` (errors only) |
+| `{% <details summary="…" value="…" open={false}> %}Markdown{% </details> %}` | A disclosure, with a value shown while closed |
+| `{% <quote name="…" role="…"> %}Their words{% </quote> %}` | A quote, with who said it |
+| `{% <code caption="config.toml"> %}` *a fenced block* `{% </code> %}` | A code block with its file's name in the bar |
+| `{{ <command text="zola serve" /> }}` | One line to paste into a terminal, with a copy button |
+| `{{ <stats labels={[…]} values={[…]} notes={[…]} /> }}` | Two to four figures, side by side |
+| `{{ <steps titles={[…]} bodies={[…]} /> }}` | Numbered stages |
+| `{{ <cta title lede url text url2 text2 /> }}` | A call to action on the quiet pattern |
+| `{{ <button url text style="primary" /> }}` | A link as a button: `primary`, `default`, or `arrow` (a text link) |
+| `{{ <badge text kind /> }}` | A status in a word: `neutral`, `accent`, `success`, `warning`, `danger`, `info`, `outline` |
+| `{{ <kbd keys="Ctrl+K" /> }}` | Keys to press |
+| `{{ <figure src alt caption width height /> }}` | An image with its caption |
+| `{{ <gallery alts={[…]} columns={16} /> }}` | The images beside a page (a page bundle), as thumbnails Zola makes |
+| `{{ <separator style="star" gap="lg" /> }}` | A break between scenes: 15 styles (`asterisks`, `dots`, `arabic`, `star`, `rule`, `gradient`…), with `gap`, `size`, `width`, `color` |
+| `{% <mermaid label="…"> %}flowchart LR…{% </mermaid> %}` | A Mermaid diagram in the theme's colours, redrawn when the theme changes (Mermaid loads from jsDelivr, on that page only) |
+| `{{ <youtube id playlist start title /> }}` | A YouTube video or playlist, 16:9, from the no-cookie domain |
+| `{{ <pdf src title height /> }}` | A PDF in the page, with a link to download it |
+| `{{ <gist user gist file /> }}` | A GitHub Gist (GitHub's script), with a link without JavaScript |
+| `{{ <instagram id /> }}` | An Instagram post (Instagram's script), a link until it loads |
 
-The demo's [Shortcodes](content/docs/shortcodes.md) page shows each one, and [Galleries, diagrams and embeds](content/blog/components/index.md) the last seven working.
+The demo's [Components](content/docs/components.md) page shows each one, and [Galleries, diagrams and embeds](content/blog/components/index.md) the last seven working. To change one, write a component of the same name in your site's `templates/` (copying the theme's from `templates/components/` is a start): yours is used instead.
 
 ## Languages
 
@@ -284,7 +289,8 @@ Write each page's translation beside it (`about.md`, `about.ar.md`). A language 
 ## Inside
 
 ```
-templates/              the templates, partials/ and shortcodes/
+templates/              the templates, partials/ and components/
+highlighting/           the code's colours, light and dark, as Zola highlighting themes
 static/arabesque/       the design system, copied unchanged: arabesque.css, icons.svg, fonts/, js/ (VERSION says which)
 static/arabesque/theme/ the theme's own: theme.css (layout, Markdown, syntax colour), theme.js, search.js, favicon.svg
 config.toml, content/   the demo site (used only when you serve this repository itself)

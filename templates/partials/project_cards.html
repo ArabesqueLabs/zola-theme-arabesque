@@ -6,8 +6,8 @@
 <ul class="zt-projects" role="list">
   {%- for p in pages %}
   {%- set image = p.extra.image | default(value="") %}
-  {%- if image is starting_with("http") %}{% set image_url = image %}
-  {%- elif image is starting_with("/") %}{% set image_url = get_url(path=image) %}
+  {%- if image is starting_with(pat="http") %}{% set image_url = image %}
+  {%- elif image is starting_with(pat="/") %}{% set image_url = get_url(path=image) %}
   {%- elif image %}{% set image_url = p.permalink ~ image %}{% endif %}
   <li>
     <article class="al-card al-card--interactive zt-card zt-project" aria-labelledby="zt-project-{{ h }}-{{ loop.index }}">

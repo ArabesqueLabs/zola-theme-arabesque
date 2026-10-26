@@ -1,0 +1,17 @@
+{#- A YouTube video or playlist, 16:9, from YouTube's no-cookie domain:
+    {{ <youtube id="ugkkza3vKbc" title="SREcon15: Notes from production engineering" /> }}
+    id        (string, optional) The video's ID.
+    playlist  (string, optional) A playlist's ID; with id, the video plays in it.
+    start     (number, optional) Where to start, in seconds: start={90}.
+    title     (string, optional) What the video is, for screen readers. -#}
+{%- component youtube(id: string = "", playlist: string = "", start = none, title: string = "", @config: map, @lang: string) -%}
+{%- set t = config.extra.i18n | get(key=lang, default=config.extra.i18n.en) -%}
+{%- set query = [] -%}
+{%- if playlist %}{% set query = [...query, "list=" ~ playlist | urlencode] %}{% endif -%}
+{%- if start %}{% set query = [...query, "start=" ~ start] %}{% endif -%}
+<div class="zt-embed zt-embed--video">
+  <iframe src="https://www.youtube-nocookie.com/embed/{% if id %}{{ id | urlencode }}{% else %}videoseries{% endif %}{% if query | length > 0 %}?{{ query | join(sep='&') }}{% endif %}"
+    title="{{ title | escape if title else t.video }}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
+    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+{%- endcomponent youtube -%}

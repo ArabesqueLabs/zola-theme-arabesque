@@ -1,0 +1,26 @@
+{#- The theme's own small parts, used by its templates: <zt.icon />,
+    <zt.url /> and <zt.date />. -#}
+
+{#- An icon from the system's sprite, or the theme's (github, feed,
+    translate, and system, light and dark for the theme button):
+    decoration, hidden from screen readers. -#}
+{%- component zt.icon(name: string, class: string = "") -%}
+{%- if name in ["github", "feed", "translate", "system", "light", "dark"] %}{% set href = get_url(path="arabesque/theme/icons.svg") ~ "#zt-icon-" ~ name %}{% else %}{% set href = get_url(path="arabesque/icons.svg") ~ "#al-icon-" ~ name %}{% endif -%}
+<svg class="al-icon{% if class %} {{ class }}{% endif %}" aria-hidden="true" focusable="false"><use href="{{ href }}"></use></svg>
+{%- endcomponent zt.icon -%}
+
+{#- A link's address from the config: "@/path.md" for content (in this
+    language), an absolute URL, or a path in the site. -#}
+{%- component zt.url(path: string, @lang: string) -%}
+{%- if path is starting_with(pat="@/") -%}{{ get_url(path=path, lang=lang) }}
+{%- elif path is starting_with(pat="http:") or path is starting_with(pat="https:") or path is starting_with(pat="mailto:") or path is starting_with(pat="#") -%}{{ path }}
+{%- elif path is ending_with(pat="/") -%}{{ get_url(path=path, trailing_slash=true) }}
+{%- else -%}{{ get_url(path=path) }}
+{%- endif -%}
+{%- endcomponent zt.url -%}
+
+{#- A date, in the language's words (with Latin digits, as the system
+    sets numbers), in a <time>. -#}
+{%- component zt.date(value, t: map) -%}
+<time datetime="{{ value | date(format='%Y-%m-%d') }}">{{ value | date(format=t.date_format, locale=t.date_locale ~ "-u-nu-latn") }}</time>
+{%- endcomponent zt.date -%}

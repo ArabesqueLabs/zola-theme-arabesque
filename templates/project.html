@@ -1,5 +1,4 @@
 {%- extends "page.html" -%}
-{%- import "macros.html" as m -%}
 
 {#- A project: a page, with its year and links to its site and source under
     the title, then its picture. Set it as a projects section's
@@ -9,8 +8,8 @@
 {%- set pr = page %}{% include "partials/project_links.html" %}
 {%- set image = page.extra.image | default(value="") %}
 {%- if image %}
-{%- if image is starting_with("http") %}{% set image_url = image %}
-{%- elif image is starting_with("/") %}{% set image_url = get_url(path=image) %}
+{%- if image is starting_with(pat="http") %}{% set image_url = image %}
+{%- elif image is starting_with(pat="/") %}{% set image_url = get_url(path=image) %}
 {%- else %}{% set image_url = page.permalink ~ image %}{% endif %}
 <img class="zt-project-cover" src="{{ image_url | safe }}" alt="{{ page.extra.image_alt | default(value='') }}" decoding="async">
 {%- endif %}

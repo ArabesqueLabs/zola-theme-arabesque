@@ -36,7 +36,7 @@ The words the theme writes (Skip to content, On this page, Previous, Next and th
 [extra.i18n.fr]
 skip = "Aller au contenu"
 on_this_page = "Sur cette page"
-date_format = "%-d %B %Y"
+date_format = "d MMMM y"   # a Unicode date pattern: 5 octobre 2026
 date_locale = "fr_FR"
 # …every key in the theme's [extra.i18n.en]
 ```

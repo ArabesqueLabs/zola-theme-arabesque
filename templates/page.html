@@ -1,5 +1,4 @@
 {%- extends "base.html" -%}
-{%- import "macros.html" as m -%}
 
 {#- A page: where it sits, its title, lede and dates, "On this page" beside
     it when it's long, its content, its terms, and the pages either side. -#}
@@ -45,13 +44,13 @@
     <nav class="zt-pager" aria-label="{{ t.more_pages }}">
       {%- if back %}
       <a class="al-card al-card--interactive zt-pager__link zt-pager__link--prev" href="{{ back.permalink | safe }}" rel="prev">
-        <span class="zt-pager__label">{{ m::icon(name="arrow", class="al-icon--sm zt-pager__back") }}{{ back_word }}</span>
+        <span class="zt-pager__label">{{ <zt.icon name="arrow" class="al-icon--sm zt-pager__back" /> }}{{ back_word }}</span>
         <span class="zt-pager__title">{{ back.title }}</span>
       </a>
       {%- endif %}
       {%- if on %}
       <a class="al-card al-card--interactive zt-pager__link zt-pager__link--next" href="{{ on.permalink | safe }}" rel="next">
-        <span class="zt-pager__label">{{ on_word }}{{ m::icon(name="arrow", class="al-icon--sm al-mirror") }}</span>
+        <span class="zt-pager__label">{{ on_word }}{{ <zt.icon name="arrow" class="al-icon--sm al-mirror" /> }}</span>
         <span class="zt-pager__title">{{ on.title }}</span>
       </a>
       {%- endif %}

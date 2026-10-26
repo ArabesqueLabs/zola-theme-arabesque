@@ -6,13 +6,13 @@
 {%- set href = config.base_url ~ "/" -%}
 {%- if code != config.default_language %}{% set href = href ~ code ~ "/" %}{% endif -%}
 {%- if current is defined -%}
-{%- set same = current.translations | filter(attribute="lang", value=code) -%}
+{%- set same = [tr for tr in current.translations if tr.lang == code] -%}
 {%- if same | length > 0 %}{% set href = same[0].permalink %}{% endif -%}
 {%- endif -%}
 {%- set name = config.extra.language_names | get(key=code, default=code) -%}
 {%- set glyph = config.extra.language_glyphs | get(key=code, default="") -%}
 <a class="al-button al-button--icon al-button--quiet zt-language" href="{{ href | safe }}" hreflang="{{ code }}" lang="{{ code }}" aria-label="{{ name }}" title="{{ name }}">
-  {%- if glyph %}<span class="zt-language__key" aria-hidden="true">{{ glyph }}</span>{% else %}{{ m::icon(name="translate") }}{% endif -%}
+  {%- if glyph %}<span class="zt-language__key" aria-hidden="true">{{ glyph }}</span>{% else %}{{ <zt.icon name="translate" /> }}{% endif -%}
 </a>
 {%- endif -%}
 {%- endfor -%}
