@@ -1,0 +1,33 @@
+{%- extends "page.html" -%}
+{%- import "macros.html" as m -%}
+
+{#- Search, in the browser, over Zola's index for this language. Use it for
+    a page (content/search.md, and search.ar.md and so on):
+      +++
+      title = "Search"
+      template = "search.html"
+      +++
+    and in config.toml, for each language:
+      build_search_index = true
+      [search]
+      index_format = "fuse_json" -#}
+
+{%- block main %}
+<div class="al-page zt-main">
+  <header class="al-page-head zt-head">
+    <h1>{{ page.title }}</h1>
+    {%- if page.description %}<p class="al-page-head__lede">{{ page.description }}</p>{% endif %}
+  </header>
+  {%- if page.content %}<div class="al-prose zt-prose">{{ page.content | safe }}</div>{% endif %}
+  <form class="zt-search" role="search" action="{{ page.permalink | safe }}" data-search-index="{{ get_url(path='search_index.' ~ lang ~ '.json') | safe }}">
+    <label class="al-label" for="zt-q">{{ t.search_label }}</label>
+    <div class="al-search">
+      {{ m::icon(name="search") }}
+      <input class="al-input" id="zt-q" name="q" type="search" autocomplete="off" spellcheck="false" enterkeyhint="search">
+      <button type="button" class="al-search__clear" aria-label="{{ t.search_clear }}" hidden>{{ m::icon(name="close", class="al-icon--sm") }}</button>
+    </div>
+  </form>
+  <p class="zt-search__status al-muted" role="status" aria-live="polite" data-search-status></p>
+  <div class="zt-search__results" data-search-results></div>
+</div>
+{%- endblock main %}

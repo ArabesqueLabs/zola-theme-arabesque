@@ -1,0 +1,26 @@
+{#- The hero's picture: a logo as it is, or a portrait in a circle; or, as
+    placeholders, initials, or (a portrait with neither) an anonymous
+    picture. Set `hero`. Raster images are resized by Zola, so the page loads
+    a small file; an SVG or an address is used as it is. The placeholders are
+    drawn here, in the theme's colours (or hero.tint, one of the system's
+    tints), so they follow the theme button as the rest of the page does. -#}
+{%- set style = hero.image_style | default(value="logo") -%}
+{%- set tint = hero.tint | default(value=hero.initials_tint | default(value="")) -%}
+<div class="zt-hero__media zt-hero__media--{{ style }}">
+  {%- if hero.image is defined %}
+  {%- set src = hero.image %}
+  {%- if src is starting_with("http") %}{% set url = src %}
+  {%- elif src is ending_with(".svg") %}{% set url = get_url(path=src) %}
+  {%- elif style == "portrait" %}{% set resized = resize_image(path=src, width=640, height=640, op="fill") %}{% set url = resized.url %}
+  {%- else %}{% set resized = resize_image(path=src, width=640, op="fit_width") %}{% set url = resized.url %}{% endif %}
+  <img class="zt-hero__image" src="{{ url | safe }}" alt="{{ hero.image_alt | default(value='') }}" decoding="async" fetchpriority="high">
+  {%- elif hero.initials is defined %}
+  <span class="al-avatar zt-hero__initials" data-tint="{{ tint | default(value='teal') }}" aria-hidden="true">{{ hero.initials }}</span>
+  {%- else %}
+  <svg class="zt-hero__placeholder" viewBox="0 0 64 64" aria-hidden="true" focusable="false"{% if tint %} data-tint="{{ tint }}"{% endif %}>
+    <rect class="zt-hero__placeholder-surface" width="64" height="64"/>
+    <rect class="zt-hero__placeholder-ground" width="64" height="64"/>
+    <g class="zt-hero__placeholder-figure"><circle cx="32" cy="25" r="11"/><path d="M10 66c0-13.3 9.85-22 22-22s22 8.7 22 22Z"/></g>
+  </svg>
+  {%- endif %}
+</div>

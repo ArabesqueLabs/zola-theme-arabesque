@@ -1,0 +1,33 @@
+{%- import "macros.html" as m -%}
+{#- What every template and partial can use: the theme's words in this
+    language (t), the direction, the home page's address, and the page or
+    section being shown (current), where there is one. -#}
+{%- set t = config.extra.i18n | get(key=lang, default=config.extra.i18n.en) -%}
+{%- set dir = "ltr" -%}
+{%- if lang in config.extra.rtl_languages %}{% set dir = "rtl" %}{% endif -%}
+{%- set home_url = config.base_url ~ "/" -%}
+{%- if lang != config.default_language %}{% set home_url = home_url ~ lang ~ "/" %}{% endif -%}
+{%- if page is defined %}{% set current = page %}{% elif section is defined %}{% set current = section %}{% endif -%}
+<!doctype html>
+<html lang="{{ lang }}" dir="{{ dir }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% if current is defined and current.title and current.path != "/" and current.path != "/" ~ lang ~ "/" %}{{ current.title }} · {% endif %}{{ config.title }}{% endblock title %}</title>
+  {%- include "partials/head.html" %}
+  {%- block head %}{% endblock head %}
+</head>
+<body>
+{% block top -%}
+{%- set sticky = config.extra.header.sticky -%}
+{%- include "partials/header.html" -%}
+{%- endblock top %}
+<main id="main" tabindex="-1">
+{% block main %}{% endblock main %}
+</main>
+{% include "partials/footer.html" %}
+<a class="al-back-to-top" href="#top" data-after="{{ config.extra.page.back_to_top_after }}">{{ m::icon(name="arrow-up") }}{{ t.back_to_top }}</a>
+{% include "partials/scripts.html" %}
+{%- block scripts %}{% endblock scripts %}
+</body>
+</html>

@@ -1,0 +1,6 @@
+{#- A disclosure (components/disclosure), with an optional value shown while
+    it's closed: {% details(summary="Workplace pension", value="5%") %}Markdown{% end %} -#}
+<details class="al-disclosure zt-details"{% if open is defined and open %} open{% endif %}>
+  <summary>{{ summary }}{% if value is defined %} <span class="al-disclosure__value">{{ value }}</span>{% endif %}</summary>
+  <div class="al-disclosure__body">{{ body | markdown | safe }}</div>
+</details>

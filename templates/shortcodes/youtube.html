@@ -1,0 +1,15 @@
+{#- A YouTube video or playlist, 16:9, from YouTube's no-cookie domain:
+    {{ youtube(id="ugkkza3vKbc", title="SREcon15: Notes from production engineering") }}
+    id        (string, optional) The video's ID.
+    playlist  (string, optional) A playlist's ID; with id, the video plays in it.
+    start     (number, optional) Where to start, in seconds.
+    title     (string, optional) What the video is, for screen readers. -#}
+{%- set t = config.extra.i18n | get(key=lang, default=config.extra.i18n.en) -%}
+{%- set query = [] -%}
+{%- if playlist is defined %}{% set query = query | concat(with="list=" ~ playlist) %}{% endif -%}
+{%- if start is defined %}{% set query = query | concat(with="start=" ~ start) %}{% endif -%}
+<div class="zt-embed zt-embed--video">
+  <iframe src="https://www.youtube-nocookie.com/embed/{% if id is defined %}{{ id }}{% else %}videoseries{% endif %}{% if query | length > 0 %}?{{ query | join(sep='&') }}{% endif %}"
+    title="{{ title | default(value=t.video) }}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
+    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>

@@ -1,0 +1,42 @@
+{%- extends "page.html" -%}
+{%- import "macros.html" as m -%}
+
+{#- Every page of a section, by year. Use it for a page:
+      +++
+      title = "Archive"
+      template = "archive.html"
+      [extra]
+      section = "blog/_index.md"   # optional: the home page's section by default
+      +++ -#}
+
+{%- block main %}
+{%- set path = page.extra.section | default(value=config.extra.home.section) %}
+<div class="al-page zt-main">
+  {%- set ancestors = page.ancestors %}
+  {%- include "partials/breadcrumbs.html" %}
+  <header class="al-page-head zt-head">
+    <h1>{{ page.title }}</h1>
+    {%- if page.description %}<p class="al-page-head__lede">{{ page.description }}</p>{% endif %}
+  </header>
+  {%- if page.content %}<div class="al-prose zt-prose">{{ page.content | safe }}</div>{% endif %}
+  {%- if path %}{% set listed = get_section(path=path, lang=lang) %}{% set all_pages = listed.pages %}{% else %}{% set all_pages = [] %}{% endif %}
+  {%- for year, pages in all_pages | group_by(attribute="year") %}
+  <section class="zt-archive" aria-labelledby="zt-year-{{ year }}">
+    <h2 class="zt-archive__year" id="zt-year-{{ year }}"><bdi>{{ year }}</bdi></h2>
+    <ul class="al-list zt-list" role="list">
+      {%- for p in pages %}
+      <li>
+        <a class="al-list__item" href="{{ p.permalink | safe }}">
+          <span class="al-list__text">
+            <span class="al-list__title">{{ p.title }}</span>
+            {%- if p.description %}<span class="al-list__description">{{ p.description }}</span>{% endif %}
+          </span>
+          <span class="al-list__end">{{ p.date | date(format=t.date_format | replace(from=" %Y", to=""), locale=t.date_locale) }}</span>
+        </a>
+      </li>
+      {%- endfor %}
+    </ul>
+  </section>
+  {%- endfor %}
+</div>
+{%- endblock main %}

@@ -1,0 +1,61 @@
+{%- extends "base.html" -%}
+{%- import "macros.html" as m -%}
+
+{#- A page: where it sits, its title, lede and dates, "On this page" beside
+    it when it's long, its content, its terms, and the pages either side. -#}
+
+{%- block main %}
+{%- set toc_min = config.extra.page.toc_min_headings %}
+{%- set show_toc = toc_min > 0 and page.toc | length >= toc_min %}
+{%- if page.extra.toc is defined %}{% set show_toc = page.extra.toc and page.toc | length > 0 %}{% endif %}
+<div class="al-page zt-main zt-doc-layout{% if show_toc %} zt-doc-layout--toc{% endif %}">
+  {%- if show_toc %}
+  <nav class="al-toc zt-toc" aria-label="{{ t.on_this_page }}">
+    <p class="al-toc__title" aria-hidden="true">{{ t.on_this_page }}</p>
+    <ul>
+      {%- for h in page.toc %}
+      <li><a href="#{{ h.id }}">{{ h.title }}</a></li>
+      {%- endfor %}
+    </ul>
+  </nav>
+  {%- endif %}
+  <article class="zt-doc" aria-labelledby="zt-title">
+    {%- set ancestors = page.ancestors %}
+    {%- include "partials/breadcrumbs.html" %}
+    <header class="zt-doc__head">
+      <h1 class="zt-doc__title" id="zt-title">{{ page.title }}
+        {%- if page.draft %} <span class="al-badge al-badge--warning">{{ t.draft }}</span>{% endif %}</h1>
+      {%- if page.description %}
+      <p class="al-lede zt-doc__lede">{{ page.description }}</p>
+      {%- endif %}
+      {%- set p = page %}{% set full_meta = true %}
+      {%- include "partials/page_meta.html" %}
+    </header>
+    <div class="al-prose zt-prose">{{ page.content | safe }}</div>
+    {%- include "partials/page_terms.html" %}
+    {%- if config.extra.page.page_nav and (page.lower or page.higher) %}
+    {#- Pages with dates are newer and older; others, previous and next. #}
+    {%- set dated = page.date and ((page.lower and page.lower.date) or (page.higher and page.higher.date)) %}
+    {#- Back at the start, on at the end: by date, the older page is back
+        (the list runs newest first, so it's `higher`) and the newer one on;
+        otherwise, the list's previous page and its next. #}
+    {%- if dated %}{% set back = page.higher %}{% set on = page.lower %}{% set back_word = t.older %}{% set on_word = t.newer %}
+    {%- else %}{% set back = page.lower %}{% set on = page.higher %}{% set back_word = t.previous %}{% set on_word = t.next %}{% endif %}
+    <nav class="zt-pager" aria-label="{{ t.more_pages }}">
+      {%- if back %}
+      <a class="al-card al-card--interactive zt-pager__link zt-pager__link--prev" href="{{ back.permalink | safe }}" rel="prev">
+        <span class="zt-pager__label">{{ m::icon(name="arrow", class="al-icon--sm zt-pager__back") }}{{ back_word }}</span>
+        <span class="zt-pager__title">{{ back.title }}</span>
+      </a>
+      {%- endif %}
+      {%- if on %}
+      <a class="al-card al-card--interactive zt-pager__link zt-pager__link--next" href="{{ on.permalink | safe }}" rel="next">
+        <span class="zt-pager__label">{{ on_word }}{{ m::icon(name="arrow", class="al-icon--sm al-mirror") }}</span>
+        <span class="zt-pager__title">{{ on.title }}</span>
+      </a>
+      {%- endif %}
+    </nav>
+    {%- endif %}
+  </article>
+</div>
+{%- endblock main %}

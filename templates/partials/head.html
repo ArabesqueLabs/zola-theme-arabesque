@@ -1,0 +1,68 @@
+{#- In <head>, after the title. -#}
+{%- set description = config.description | default(value="") -%}
+{%- if current is defined and current.description %}{% set description = current.description %}{% endif -%}
+{%- set og_title = config.title -%}
+{%- if current is defined and current.title %}{% set og_title = current.title %}{% endif %}
+  {%- if description %}
+  <meta name="description" content="{{ description }}">
+  {%- endif %}
+  {%- if current is defined %}
+  <link rel="canonical" href="{{ current.permalink | safe }}">
+  {%- for tr in current.translations %}
+  <link rel="alternate" hreflang="{{ tr.lang }}" href="{{ tr.permalink | safe }}">
+  {%- endfor %}
+  {%- elif current_url is defined %}
+  <link rel="canonical" href="{{ current_url | safe }}">
+  {%- endif %}
+  {%- if config.extra.author %}
+  <meta name="author" content="{{ config.extra.author }}">
+  {%- elif config.author %}
+  <meta name="author" content="{{ config.author }}">
+  {%- endif %}
+  <meta name="color-scheme" content="light dark">
+  <meta name="generator" content="Zola">
+  {#- The saved theme, before first paint, so there's no flash. #}
+  <script>try { const t = localStorage.getItem("al-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch {}</script>
+  {%- set favicon = config.extra.favicon | default(value="arabesque/theme/favicon.svg") %}
+  <link rel="icon" href="{{ get_url(path=favicon) }}"{% if favicon is ending_with(".svg") %} type="image/svg+xml"{% endif %}>
+  <link rel="stylesheet" href="{{ get_url(path='arabesque/fonts/fonts.css') }}">
+  <link rel="stylesheet" href="{{ get_url(path='arabesque/arabesque.css', cachebust=true) }}">
+  <link rel="stylesheet" href="{{ get_url(path='arabesque/theme/theme.css', cachebust=true) }}">
+  {%- for sheet in config.extra.stylesheets | default(value=[]) %}
+  <link rel="stylesheet" href="{{ get_url(path=sheet, cachebust=true) }}">
+  {%- endfor %}
+  {%- if config.generate_feeds %}
+  {%- for feed in config.feed_filenames %}
+  <link rel="alternate" type="application/{% if feed is containing('rss') %}rss{% else %}atom{% endif %}+xml" title="{{ config.title }}" href="{{ get_url(path=feed, lang=lang) | safe }}">
+  {%- endfor %}
+  {%- endif %}
+  <meta property="og:site_name" content="{{ config.title }}">
+  <meta property="og:title" content="{{ og_title }}">
+  {%- if description %}
+  <meta property="og:description" content="{{ description }}">
+  {%- endif %}
+  <meta property="og:type" content="{% if page is defined %}article{% else %}website{% endif %}">
+  <meta property="og:locale" content="{{ t.date_locale }}">
+  {%- if current is defined %}
+  <meta property="og:url" content="{{ current.permalink | safe }}">
+  {%- endif %}
+  {%- set image = config.extra.og_image | default(value="") -%}
+  {%- if current is defined and current.extra.image %}{% set image = current.extra.image %}{% endif -%}
+  {%- if image %}
+  {%- if image is starting_with("http") %}{% set image_url = image %}
+  {%- elif current is defined and current.extra.image and not image is starting_with("/") %}{% set image_url = current.permalink ~ image %}
+  {%- else %}{% set image_url = get_url(path=image) %}{% endif %}
+  <meta property="og:image" content="{{ image_url | safe }}">
+  <meta name="twitter:card" content="summary_large_image">
+  {%- else %}
+  <meta name="twitter:card" content="summary">
+  {%- endif %}
+  {%- if page is defined and page.date %}
+  <meta property="article:published_time" content="{{ page.date | date(format='%+') }}">
+  {%- if page.updated %}
+  <meta property="article:modified_time" content="{{ page.updated | date(format='%+') }}">
+  {%- endif %}
+  {%- for tag in page.taxonomies.tags | default(value=[]) %}
+  <meta property="article:tag" content="{{ tag }}">
+  {%- endfor %}
+  {%- endif %}

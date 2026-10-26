@@ -1,0 +1,30 @@
+{%- extends "base.html" -%}
+{%- import "macros.html" as m -%}
+
+{#- One term: the pages that have it, newest first, a page of them at a
+    time when the taxonomy is paginated. -#}
+
+{%- block title %}{{ term.name }} · {{ config.title }}{% endblock title -%}
+
+{%- block main %}
+{%- set name = t | get(key="taxonomy_" ~ taxonomy.name, default=taxonomy.name | capitalize) %}
+<div class="al-page zt-main">
+  <nav class="al-breadcrumbs zt-breadcrumbs" aria-label="{{ t.breadcrumb }}">
+    <ol>
+      <li><a href="{{ home_url | safe }}">{{ t.home }}</a></li>
+      {%- set all_terms = get_taxonomy(kind=taxonomy.name, lang=lang) %}
+      <li><a href="{{ all_terms.permalink | safe }}">{{ name }}</a></li>
+      <li><a href="{{ term.permalink | safe }}" aria-current="page">{{ term.name }}</a></li>
+    </ol>
+  </nav>
+  <header class="al-page-head zt-head">
+    <h1>{{ term.name }}</h1>
+    <div class="al-page-head__end"><span class="al-badge al-badge--count"><bdi>{{ term.pages | length }}</bdi><span class="al-visually-hidden"> {{ t.pages_count }}</span></span></div>
+  </header>
+  {%- if paginator is defined %}{% set pages = paginator.pages %}{% else %}{% set pages = term.pages %}{% endif %}
+  {%- set dated = true %}
+  {%- if paginator is defined %}{% include "partials/range.html" %}{% endif %}
+  {%- include "partials/page_list.html" %}
+  {%- if paginator is defined %}{% include "partials/pagination.html" %}{% endif %}
+</div>
+{%- endblock main %}

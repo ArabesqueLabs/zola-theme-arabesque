@@ -1,0 +1,11 @@
+{#- One line to paste into a terminal (components/code, command), with a copy
+    button: {{ command(text="zola serve") }} -#}
+{%- import "macros.html" as m -%}
+{%- set t = config.extra.i18n | get(key=lang, default=config.extra.i18n.en) -%}
+<div class="al-command al-command--prompt zt-command">
+  <code dir="ltr" tabindex="0">{{ text }}</code>
+  <button type="button" class="al-button al-button--quiet al-button--sm al-code__copy" data-copy data-label-copy="{{ t.copy }}" data-label-copied="{{ t.copied }}" data-label-failed="{{ t.copy_failed }}">
+    {{ m::icon(name="copy", class="al-code__copy-idle") }}{{ m::icon(name="check", class="al-code__copy-done") }}<span data-copy-label>{{ t.copy }}</span>
+  </button>
+  <span class="al-visually-hidden" role="status" data-copy-status></span>
+</div>

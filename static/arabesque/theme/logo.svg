@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 74 74" role="img" aria-label="Arabesque for Zola">
+  <!-- The pattern's focal tile: an octagon of the 4.8.8 tiling, and the
+       eight-point star whose points touch its edges' midpoints. -->
+  <style>
+    /* Lines keep their width in pixels at any size: light in the hero, still there at 24px. */
+    path{vector-effect:non-scaling-stroke}
+    .tile{fill:#f8fafc;stroke:#136555;stroke-opacity:.5;stroke-width:1.25px}
+    .star{fill:#d6ebe5;stroke:#136555;stroke-width:2px;stroke-linejoin:miter}
+    @media (prefers-color-scheme:dark){.tile{fill:#0e121a;stroke:#7cdcb9}.star{fill:#1d3a35;stroke:#7cdcb9}}
+  </style>
+  <path class="tile" d="M64.00 45.25L45.25 64.00L18.75 64.00L0.00 45.25L-0.00 18.75L18.75 -0.00L45.25 0.00L64.00 18.75Z"/>
+  <path class="star" d="M64 32L48 38.63L54.63 54.63L38.63 48L32 64L25.37 48L9.37 54.63L16 38.63L0 32L16 25.37L9.37 9.37L25.37 16L32 0L38.63 16L54.63 9.37L48 25.37Z"/>
+</svg>

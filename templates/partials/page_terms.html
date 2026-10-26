@@ -1,0 +1,13 @@
+{#- The page's terms, per taxonomy, as links to their pages. -#}
+{%- for name, terms in page.taxonomies %}
+{%- if terms | length > 0 %}
+<div class="zt-terms">
+  <h2 class="zt-terms__title">{{ t | get(key="taxonomy_" ~ name, default=name | capitalize) }}</h2>
+  <ul class="al-cluster zt-terms__list" role="list">
+    {%- for term in terms %}
+    <li><a class="zt-term" href="{{ get_taxonomy_url(kind=name, name=term, lang=lang) | safe }}">{{ term }}</a></li>
+    {%- endfor %}
+  </ul>
+</div>
+{%- endif %}
+{%- endfor %}

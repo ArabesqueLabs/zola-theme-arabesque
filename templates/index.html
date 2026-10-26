@@ -1,0 +1,97 @@
+{%- extends "base.html" -%}
+{%- import "macros.html" as m -%}
+
+{#- The home page: the site header (sticky, on the page's ground, as on
+    every page; or on the pattern, when it isn't sticky), the hero, the page's
+    own content, then the latest pages of one section. -#}
+
+{%- block title %}{{ config.title }}{% if section.title and section.title != config.title %} · {{ section.title }}{% endif %}{% endblock title -%}
+
+{%- block top -%}
+{%- set home = config.extra.home -%}
+{#- Any table without the keys will do in place of a missing hero. -#}
+{%- set hero = section.extra.hero | default(value=config.extra.home) -%}
+{%- set sticky = config.extra.header.sticky -%}
+{%- if sticky %}{% include "partials/header.html" %}{% endif %}
+{#- A logo or a profile picture, in the focal tile's place: image (in
+    static/, or an address), image_alt, and image_style "logo" (as it is,
+    the default) or "portrait" (cropped to a circle); or, with no image,
+    initials, in a circle; or, a portrait with neither, an anonymous profile
+    picture, as a placeholder. #}
+{%- set media = hero.image is defined or hero.initials is defined or hero.image_style | default(value="") == "portrait" %}
+<div class="zt-hero{% if home.pattern %} al-pattern al-pattern--hero{% endif %}{% if media %} zt-hero--media{% endif %}">
+  {%- if home.pattern %}
+  <div class="al-pattern__art" aria-hidden="true" data-pattern-hero{% if home.animate %} data-pattern-animate{% endif %}{% if media %} data-pattern-focal="false"{% endif %}></div>
+  {%- endif %}
+  {%- if not sticky %}{% include "partials/header.html" %}{% endif %}
+  <section class="al-page zt-hero__body" aria-labelledby="zt-hero-title">
+    {%- if media %}{% include "partials/hero_media.html" %}{% endif %}
+    {%- if hero.eyebrow is defined %}
+    <p class="al-eyebrow zt-hero__eyebrow">{{ hero.eyebrow }}</p>
+    {%- endif %}
+    <h1 class="al-display zt-hero__title" id="zt-hero-title">{{ hero.title | default(value=section.title | default(value=config.title)) }}</h1>
+    {%- set lede = hero.lede | default(value=section.description | default(value=config.description | default(value=""))) %}
+    {%- if lede %}
+    <p class="al-lede zt-hero__lede">{{ lede }}</p>
+    {%- endif %}
+    {%- set actions = hero.actions | default(value=[]) %}
+    {%- if actions | length > 0 %}
+    <div class="al-cluster zt-hero__actions">
+      {%- for action in actions %}
+      {%- set href = m::url(path=action.url, lang=lang) %}
+      {%- if loop.first %}
+      <a class="al-button al-button--primary" href="{{ href | safe }}">{{ action.name }}</a>
+      {%- else %}
+      <a class="al-link al-link--arrow" href="{{ href | safe }}">{{ action.name }}{{ m::icon(name="arrow", class="al-mirror") }}</a>
+      {%- endif %}
+      {%- endfor %}
+    </div>
+    {%- endif %}
+    {%- set links = hero.links | default(value=[]) %}
+    {%- if links | length > 0 %}
+    <ul class="al-cluster zt-hero__links" role="list">
+      {%- for link in links %}
+      {%- if link.url is defined %}{% set href = m::url(path=link.url, lang=lang) %}
+      {%- elif link.icon == "feed" and config.generate_feeds %}{% set href = get_url(path=config.feed_filenames[0], lang=lang) %}
+      {%- else %}{% continue %}{% endif %}
+      <li><a class="al-button al-button--icon al-button--quiet" href="{{ href | safe }}" aria-label="{{ link.name }}" title="{{ link.name }}">{{ m::icon(name=link.icon | default(value="external")) }}</a></li>
+      {%- endfor %}
+    </ul>
+    {%- endif %}
+    {%- if home.pattern and hero.caption is defined %}
+    <p class="al-pattern__caption" data-pattern-caption>{{ hero.caption }}</p>
+    {%- endif %}
+  </section>
+</div>
+{%- endblock top -%}
+
+{%- block main %}
+{%- if section.content %}
+<section class="al-section">
+  <div class="al-page"><div class="al-prose zt-prose zt-prose--wide">{{ section.content | safe }}</div></div>
+</section>
+{%- endif %}
+{%- set home = config.extra.home -%}
+{%- if home.section %}
+{%- set listed = get_section(path=home.section, lang=lang) %}
+{%- set pages = listed.pages | slice(end=home.count) %}
+{%- if pages | length > 0 %}
+<section class="al-section" aria-labelledby="zt-latest">
+  <div class="al-page">
+    <div class="al-cluster al-cluster--between zt-section-head">
+      <hgroup class="al-section__head">
+        <p class="al-eyebrow">{{ t.latest }}</p>
+        <h2 class="al-section__title" id="zt-latest">{{ listed.title | default(value=t.latest) }}</h2>
+      </hgroup>
+      {%- if listed.pages | length > pages | length or listed.subsections | length > 0 %}
+      <a class="al-link al-link--arrow" href="{{ listed.permalink | safe }}">{{ t.see_all }}{{ m::icon(name="arrow", class="al-mirror") }}</a>
+      {%- endif %}
+    </div>
+    {%- set dated = pages[0].date %}
+    {%- set heading = "h3" %}
+    {%- include "partials/page_list.html" %}
+  </div>
+</section>
+{%- endif %}
+{%- endif %}
+{%- endblock main %}

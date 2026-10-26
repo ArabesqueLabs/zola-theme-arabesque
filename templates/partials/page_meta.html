@@ -1,0 +1,10 @@
+{#- A page's date, update, reading time and authors, in a line: set `p`. -#}
+{%- set show_time = config.extra.page.reading_time and p.reading_time -%}
+{%- if p.date or show_time or p.authors | default(value=[]) | length > 0 %}
+<p class="zt-meta">
+  {%- if p.date %}<span>{{ m::date(value=p.date, t=t) }}</span>{% endif %}
+  {%- if p.updated and p.updated != p.date and full_meta is defined %}<span>{{ t.updated }} {{ m::date(value=p.updated, t=t) }}</span>{% endif %}
+  {%- if show_time %}<span>{{ t.reading_time | replace(from="%n", to="<bdi>" ~ p.reading_time ~ "</bdi>") | safe }}</span>{% endif %}
+  {%- if full_meta is defined and p.authors | default(value=[]) | length > 0 %}<span>{{ t.by }} {{ p.authors | join(sep=t.list_sep) }}</span>{% endif %}
+</p>
+{%- endif %}
