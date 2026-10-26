@@ -1,0 +1,25 @@
+{#- The pages of a long list (components/pagination): Previous and Next in
+    words, at most seven numbers, the gaps an ellipsis. Needs `paginator`. -#}
+{%- if paginator.number_pagers > 1 %}
+{%- set here = paginator.current_index %}
+<nav class="al-pagination zt-pagination" aria-label="{{ t.pagination }}">
+  <ul>
+    {%- if paginator.previous %}
+    <li><a class="al-pagination__prev" href="{{ paginator.previous | safe }}" rel="prev">{{ m::icon(name="chevron", class="al-icon--sm al-mirror") }}{{ t.previous }}</a></li>
+    {%- endif %}
+    {%- set numbers = m::page_range(page=here, pages=paginator.number_pagers) %}
+    {%- for n in numbers | split(pat=",") %}
+    {%- set n = n | int %}
+    {%- if n == 0 %}
+    <li><span class="al-pagination__gap" aria-hidden="true">…</span></li>
+    {%- else %}
+    {%- if n == 1 %}{% set href = paginator.first %}{% else %}{% set href = paginator.base_url ~ n ~ "/" %}{% endif %}
+    <li><a href="{{ href | safe }}" aria-label="{{ t.page_n | replace(from='%n', to=n ~ '') }}"{% if n == here %} aria-current="page"{% endif %}>{{ n }}</a></li>
+    {%- endif %}
+    {%- endfor %}
+    {%- if paginator.next %}
+    <li><a class="al-pagination__next" href="{{ paginator.next | safe }}" rel="next">{{ t.next }}{{ m::icon(name="chevron", class="al-icon--sm al-mirror") }}</a></li>
+    {%- endif %}
+  </ul>
+</nav>
+{%- endif %}

@@ -1,0 +1,11 @@
+{#- Which of how many a page of a paginated list shows ("11 to 20 of 24"),
+    above the list. Needs `paginator` and `pages`. -#}
+{%- if paginator.number_pagers > 1 %}
+{%- set from = (paginator.current_index - 1) * paginator.paginate_by + 1 %}
+{%- set shown = pages | length %}
+{%- set to = from + shown - 1 %}
+{%- set from = "<bdi>" ~ from ~ "</bdi>" %}
+{%- set to = "<bdi>" ~ to ~ "</bdi>" %}
+{%- set total = "<bdi>" ~ paginator.total_pages ~ "</bdi>" %}
+<p class="zt-range al-muted">{{ t.range | replace(from="%from", to=from) | replace(from="%total", to=total) | replace(from="%to", to=to) | safe }}</p>
+{%- endif %}

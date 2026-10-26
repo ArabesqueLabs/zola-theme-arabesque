@@ -1,0 +1,51 @@
+{#- The site header (components/site-header). Set `sticky` before including. -#}
+{%- set menu = config.extra.menu | get(key=lang, default=[]) -%}
+{%- set header = config.extra.header -%}
+{%- set action = header.action | get(key=lang, default=false) -%}
+{%- set search_page = config.extra.search.page -%}
+{%- set has_languages = header.language_link and config.languages | length > 0 -%}
+{%- set has_extras = has_languages -%}
+<header class="al-site-header{% if sticky %} al-site-header--sticky{% endif %}">
+  <a class="al-skip-link" href="#main">{{ t.skip }}</a>
+  <div class="al-page al-site-header__bar">
+    <a class="al-lockup al-site-header__lockup" href="{{ home_url | safe }}"{% if current_url is defined and current_url == home_url %} aria-current="page"{% endif %}>
+      {%- if header.logo %}<img class="al-mark zt-logo" src="{{ get_url(path=header.logo) }}" alt="">{% endif -%}
+      <span class="al-wordmark">{{ config.title }}</span></a>
+    <div class="al-site-header__end">
+      {#- Search, before the menu (on the left in English, the right in
+          Arabic), and in the bar at every width. #}
+      {%- if search_page %}
+      {%- set search_url = m::url(path=search_page, lang=lang) %}
+      <a class="al-button al-button--icon al-button--quiet zt-search-link" href="{{ search_url | safe }}" aria-label="{{ t.search }}" title="{{ t.search }}"{% if current_url is defined and current_url == search_url %} aria-current="page"{% endif %}>{{ m::icon(name="search") }}</a>
+      {%- endif %}
+      {%- if menu | length > 0 %}
+      <nav class="al-site-header__nav" aria-label="{{ t.sections }}"><ul>{% include "partials/menu_items.html" %}</ul></nav>
+      {%- endif %}
+      <div class="al-site-header__tools">
+        {%- if has_extras %}
+        <div class="al-site-header__extras">{% include "partials/header_extras.html" %}</div>
+        {%- endif %}
+        {%- if header.theme_toggle %}
+        {#- Shows the mode in use (as the system, light or dark: CSS reads
+            <html data-theme>, so it's right before the script runs), and is
+            named for what pressing it does: system, then light, then dark. #}
+        <button type="button" class="al-button al-button--icon al-button--quiet zt-theme" data-theme-toggle data-label-system="{{ t.theme_to_system }}" data-label-light="{{ t.theme_to_light }}" data-label-dark="{{ t.theme_to_dark }}" aria-label="{{ t.theme_to_light }}" title="{{ t.theme_to_light }}">
+          {{- m::icon(name="system", class="zt-theme__system") }}{{ m::icon(name="light", class="zt-theme__light") }}{{ m::icon(name="dark", class="zt-theme__dark") -}}
+        </button>
+        {%- endif %}
+        {%- if action %}
+        <a class="al-button al-button--primary al-button--sm al-site-header__action" href="{{ m::url(path=action.url, lang=lang) | safe }}">{{ action.name }}</a>
+        {%- endif %}
+        {%- if menu | length > 0 or has_extras %}
+        <button type="button" class="al-button al-button--icon al-button--quiet al-site-header__toggle" data-site-menu-toggle aria-controls="site-menu" aria-expanded="false" aria-label="{{ t.menu }}">{{ m::icon(name="menu", class="al-site-header__open") }}{{ m::icon(name="close", class="al-site-header__close") }}</button>
+        {%- endif %}
+      </div>
+    </div>
+  </div>
+  {%- if menu | length > 0 or has_extras %}
+  <nav class="al-page al-site-header__menu" id="site-menu" aria-label="{{ t.sections }}" hidden>
+    {%- if menu | length > 0 %}<ul>{% include "partials/menu_items.html" %}</ul>{% endif %}
+    {%- if has_extras %}<div class="al-site-header__menu-tools">{% include "partials/header_extras.html" %}</div>{% endif %}
+  </nav>
+  {%- endif %}
+</header>

@@ -1,0 +1,340 @@
+/* The Zola theme's own layout: how the system's components (arabesque.css)
+   are arranged into a site's pages, and how Markdown's HTML takes their
+   look. Not part of the design system. Tokens only, logical properties
+   only. Unlayered, so it wins over the system's layers. */
+
+/* ---- frame ------------------------------------------------------------------------------- */
+
+body { display: flex; flex-direction: column; min-block-size: 100dvh; margin: 0; background: var(--al-color-bg); }
+main { flex: 1 0 auto; }
+main:focus { outline: none; }
+.zt-logo { object-fit: contain; }
+
+/* The theme button shows the mode in use: as the system (no data-theme),
+   light or dark. */
+.zt-theme .al-icon { display: none; }
+:root:not([data-theme]) .zt-theme__system, :root[data-theme="light"] .zt-theme__light, :root[data-theme="dark"] .zt-theme__dark { display: block; }
+
+/* Below the sticky header (5rem, 4rem under md): where a link to a heading lands. */
+:root { --zt-header: 5rem; }
+
+/* The space between a site's sections: a third of the system's. */
+:root { --zt-section-space: calc(var(--al-space-section) / 3); }
+.al-section { padding-block: var(--zt-section-space); }
+@media (max-width: 52rem) { :root { --zt-header: 4rem; } }
+:target, .zt-prose :is(h2, h3, h4) { scroll-margin-block-start: calc(var(--zt-header) + var(--al-space-6)); }
+
+.zt-main { padding-block: var(--al-space-8) var(--al-space-16); }
+.zt-breadcrumbs { margin-block-end: var(--al-space-4); }
+/* Titles take the width they need, on one line where it fits. */
+.zt-head > h1, .zt-doc__title, .zt-post__title { max-inline-size: none; text-wrap: wrap; }
+.zt-range { margin-block-end: var(--al-space-4); font-size: var(--al-text-sm); }
+.zt-footer-nav { margin-inline-start: auto; }
+/* Room under the footer for "Back to top", fixed in the corner, so at the
+   foot of the page it doesn't cover the footer's links. */
+.al-footer { padding-block-end: calc(var(--al-space-8) + var(--al-size-target-touch) + var(--al-space-4)); }
+.zt-search-link { margin-inline-end: calc(-1 * var(--al-space-4)); }
+/* The language link: the other language's letter in a key, the size of an
+   icon, in that language's own face (the link has its lang). */
+.zt-language__key { display: inline-grid; place-items: center; min-inline-size: calc(var(--al-size-icon) + 0.25rem); block-size: calc(var(--al-size-icon) + 0.25rem); padding-inline: 0.125rem; border: 1.5px solid currentColor; border-radius: 0.1875rem; font-family: var(--al-font-sans); font-size: 0.8125rem; font-weight: var(--al-weight-medium); line-height: 1; letter-spacing: 0; }
+.zt-language__key:lang(ar) { font-size: 0.9375rem; padding-block-end: 0.125rem; }
+.al-footer__legal a:not([class]) { color: inherit; }
+.al-footer__links { align-items: center; }
+.zt-footer-icon { display: inline-flex; align-items: center; justify-content: center; min-block-size: var(--al-size-target-min); min-inline-size: var(--al-size-target-min); }
+
+/* ---- the home page's hero (as the system's studio template) ------------------------------ */
+
+.zt-hero { border-block-end: var(--al-border-hairline) solid var(--al-color-line); }
+.zt-hero__body { padding-block: var(--al-space-16) var(--zt-section-space); }
+.zt-hero__eyebrow { margin-block-end: var(--al-space-4); }
+.zt-hero__title { max-inline-size: 15ch; margin: 0; }
+.zt-hero__lede { margin: var(--al-space-8) 0 0; max-inline-size: 44ch; }
+.zt-hero__actions { margin-block-start: var(--al-space-8); gap: var(--al-space-6); }
+.zt-hero__links { list-style: none; margin: var(--al-space-6) 0 0; padding: 0; margin-inline-start: calc(-1 * var(--al-space-1)); --al-cluster-gap: var(--al-space-3); }
+/* Twice the system's icon size, in a target that grows with it. */
+.zt-hero__links .al-icon { inline-size: calc(2 * var(--al-size-icon)); block-size: calc(2 * var(--al-size-icon)); }
+.zt-hero__links .al-button--icon { inline-size: auto; min-inline-size: var(--al-button-height); padding: var(--al-space-1); }
+@media (max-width: 52rem) { .zt-hero__body { padding-block-start: var(--al-space-8); } }
+/* The hero's picture (a logo, or a portrait) in the focal tile's place:
+   centred three quarters across (a quarter, right to left) and half way
+   down, as js/pattern.js draws the tile. Under md, above the title. */
+.zt-hero { --zt-media-size: clamp(9rem, 20vw, 16rem); position: relative; }
+.zt-hero__media { display: grid; place-items: center; inline-size: var(--zt-media-size); }
+.zt-hero__image { inline-size: 100%; block-size: auto; }
+.zt-hero__media--portrait .zt-hero__image { aspect-ratio: 1; object-fit: cover; border-radius: var(--al-radius-full); background: var(--al-color-surface); }
+
+/* A portrait (a photo, initials or the placeholder) sits in a halo: a ring of
+   the page's ground, with a hairline, that clears the pattern around it.
+   The system's depth is hairlines and grounds, never shadows.
+   To change it, set these in your own stylesheet (extra.stylesheets):
+     --zt-hero-halo           the ring's width (0 for none)
+     --zt-avatar-ground       the placeholder's circle
+     --zt-avatar-figure       the placeholder's figure */
+.zt-hero { --zt-hero-halo: 0.875rem; --zt-avatar-ground: var(--al-color-surface-sunk); --zt-avatar-figure: var(--al-color-line-strong); }
+.zt-hero__media--portrait, .zt-hero__media:has(.zt-hero__initials) { border-radius: var(--al-radius-full); box-shadow: 0 0 0 var(--al-border-hairline) var(--al-color-line), 0 0 0 var(--zt-hero-halo) var(--al-color-bg); }
+.zt-hero__placeholder { display: block; inline-size: 100%; block-size: auto; clip-path: circle(50%); }
+.zt-hero__placeholder[data-tint] { --zt-avatar-ground: var(--_tint-bg); --zt-avatar-figure: color-mix(in srgb, var(--_tint-ink) 45%, transparent); }
+.zt-hero__placeholder-surface { fill: var(--al-color-surface); }
+.zt-hero__placeholder-ground { fill: var(--zt-avatar-ground); }
+.zt-hero__placeholder-figure { fill: var(--zt-avatar-figure); }
+@media (forced-colors: active) { .zt-hero__placeholder-figure { fill: CanvasText; } .zt-hero__placeholder-ground { fill: Canvas; } }
+.zt-hero__initials { inline-size: var(--zt-media-size); block-size: var(--zt-media-size); font-family: var(--al-font-display); font-size: calc(var(--zt-media-size) * 0.36); font-weight: var(--al-weight-regular); letter-spacing: var(--al-tracking-tight); }
+@media (min-width: 52.01rem) {
+  .zt-hero__media { position: absolute; inset-block-start: 50%; inset-inline-start: 76%; translate: -50% -50%; }
+  /* Tall enough for the picture, with room above and below, however short the text. */
+  .zt-hero--media { min-block-size: calc(var(--zt-media-size) + 2 * var(--al-space-12)); display: flex; flex-direction: column; justify-content: center; }
+  .zt-hero__media:dir(rtl) { translate: 50% -50%; }
+  /* The text keeps clear of it. */
+  .zt-hero--media .zt-hero__lede { max-inline-size: min(44ch, calc(76% - var(--zt-media-size) / 2 - var(--al-space-8))); }
+}
+@media (max-width: 52rem) {
+  .zt-hero { --zt-media-size: 7rem; }
+  .zt-hero__media { margin-block-end: var(--al-space-6); }
+}
+
+/* With no pattern, the hero's lede has nothing to keep clear of. */
+.zt-hero:not(.al-pattern) .zt-hero__lede { max-inline-size: var(--al-size-measure); }
+
+.zt-section-head { align-items: end; margin-block-end: var(--al-space-8); }
+
+/* ---- lists of pages ---------------------------------------------------------------------- */
+
+/* Dated pages: an article each, the date first. */
+.zt-posts { list-style: none; margin: 0; padding: 0; }
+.zt-post { position: relative; display: flex; flex-direction: column; gap: var(--al-space-2); padding-block: var(--al-space-6); }
+.zt-post__title { font-size: var(--al-text-xl); }
+.zt-post__title a { color: var(--al-color-text); text-decoration: none; }
+.zt-post__title a:hover { color: var(--al-color-accent); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.2em; }
+.zt-post__summary { max-inline-size: var(--al-size-measure); font-family: var(--al-font-serif); font-size: var(--al-text-md); line-height: var(--al-leading-prose); color: var(--al-color-text-muted); }
+.zt-post .zt-meta { order: -1; }
+
+/* A line of facts about a page, separated by a dot. */
+.zt-meta { display: flex; flex-wrap: wrap; gap: var(--al-space-1) var(--al-space-2); margin: 0; font-size: var(--al-text-sm); color: var(--al-color-text-muted); font-variant-numeric: tabular-nums; }
+.zt-meta > span + span::before { content: "·"; content: "·" / ""; margin-inline-end: var(--al-space-2); }
+
+.zt-list .al-list__item { align-items: center; }
+.zt-list__chevron { flex: none; margin-inline-start: auto; color: var(--al-color-text-muted); }
+.zt-list .al-list__end { font-variant-numeric: tabular-nums; }
+
+.zt-subsections { list-style: none; margin: 0 0 var(--al-space-12); padding: 0; }
+.zt-card { position: relative; block-size: 100%; }
+.zt-card__link { color: var(--al-color-text); text-decoration: none; }
+.zt-card__link::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.zt-card__link:focus-visible { outline: none; }
+.zt-card:has(.zt-card__link:focus-visible) { outline: var(--al-border-focus) solid var(--al-color-focus); outline-offset: var(--al-border-focus-offset); }
+
+.zt-pagination { margin-block-start: var(--al-space-8); }
+
+.zt-archive + .zt-archive { margin-block-start: var(--al-space-12); }
+.zt-archive__year { margin-block-end: var(--al-space-4); font-size: var(--al-text-2xl); font-variant-numeric: tabular-nums; }
+
+/* ---- a page ------------------------------------------------------------------------------ */
+
+/* As the system's own document pages: "On this page" in a column at the
+   start, sticky below the header; above the content under md. */
+.zt-doc-layout--toc { display: grid; grid-template-columns: 13rem minmax(0, 1fr); gap: var(--al-space-12); align-items: start; }
+.zt-toc { position: sticky; inset-block-start: calc(var(--zt-header) + var(--al-space-6)); }
+@media (max-width: 52rem) {
+  .zt-doc-layout--toc { grid-template-columns: minmax(0, 1fr); gap: var(--al-space-6); }
+  .zt-toc { position: static; }
+}
+/* The text keeps its reading width; the title takes the whole column. */
+.zt-doc { min-inline-size: 0; }
+.zt-doc > :not(.zt-doc__head) { max-inline-size: 46rem; }
+.zt-doc__head { display: flex; flex-direction: column; gap: var(--al-space-4); margin-block-end: var(--al-space-8); padding-block-end: var(--al-space-6); border-block-end: var(--al-border-hairline) solid var(--al-color-line); }
+.zt-doc__title .al-badge { vertical-align: middle; }
+.zt-doc__lede { margin: 0; }
+
+.zt-terms { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--al-space-3); margin-block-start: var(--al-space-12); }
+.zt-terms + .zt-terms { margin-block-start: var(--al-space-4); }
+.zt-terms__title { font-family: var(--al-font-sans); font-size: var(--al-text-sm); font-weight: var(--al-weight-medium); letter-spacing: var(--al-tracking-none); color: var(--al-color-text-muted); }
+.zt-terms__list { list-style: none; margin: 0; padding: 0; --al-cluster-gap: var(--al-space-2); }
+.zt-term {
+  display: inline-flex; align-items: center; min-block-size: var(--al-size-target-min);
+  padding-inline: var(--al-space-3); border: var(--al-border-hairline) solid var(--al-color-line-strong); border-radius: var(--al-radius-full);
+  font-size: var(--al-text-sm); color: var(--al-color-text); text-decoration: none;
+  transition: border-color var(--al-duration-fast) var(--al-ease-standard), color var(--al-duration-fast) var(--al-ease-standard);
+}
+.zt-term:hover { border-color: var(--al-color-accent); color: var(--al-color-accent); }
+
+/* The pages either side, as two cards; the previous at the start. */
+.zt-pager { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--al-space-4); margin-block-start: var(--al-space-12); padding-block-start: var(--al-space-8); border-block-start: var(--al-border-hairline) solid var(--al-color-line); }
+.zt-pager__link { display: flex; flex-direction: column; gap: var(--al-space-1); color: var(--al-color-text); text-decoration: none; }
+.zt-pager__link--next { grid-column: 2; align-items: flex-end; text-align: end; }
+.zt-pager__label { display: inline-flex; align-items: center; gap: var(--al-space-1); font-size: var(--al-text-sm); color: var(--al-color-text-muted); }
+.zt-pager__title { font-family: var(--al-font-display); font-size: var(--al-text-lg); line-height: var(--al-leading-heading); }
+.zt-pager__link:hover .zt-pager__title { color: var(--al-color-accent); }
+/* The arrow back points to the start: right to left, it's already there. */
+.zt-pager__back { transform: scaleX(-1); }
+.zt-pager__back:dir(rtl) { transform: none; }
+@media (max-width: 40rem) {
+  .zt-pager { grid-template-columns: minmax(0, 1fr); }
+  .zt-pager__link--next { grid-column: auto; }
+}
+
+.zt-not-found { margin-block: var(--al-space-12); }
+
+/* ---- running text: Markdown's HTML in the system's look ---------------------------------- */
+
+.zt-prose { overflow-wrap: break-word; }
+.zt-prose--wide { max-inline-size: none; }
+.zt-prose--wide > :not(.al-steps, .al-stats, .al-cta, .al-grid) { max-inline-size: var(--al-size-measure); }
+.zt-prose :is(h2, h3, h4) { font-family: var(--al-font-display); }
+.zt-prose > h2 { margin-block-start: var(--al-space-12); font-size: var(--al-text-2xl); }
+.zt-prose > h3 { margin-block-start: var(--al-space-8); font-size: var(--al-text-xl); font-weight: var(--al-weight-regular); letter-spacing: var(--al-tracking-tight); }
+.zt-prose > h4 { margin-block-start: var(--al-space-6); }
+.zt-prose > :first-child { margin-block-start: 0; }
+.zt-prose a:not([class]) { color: var(--al-color-text); text-decoration-color: var(--al-color-accent); text-underline-offset: 0.2em; }
+.zt-prose a:not([class]):hover { color: var(--al-color-accent); text-decoration-thickness: 2px; }
+.zt-prose hr { margin-block: var(--al-space-12); }
+.zt-prose img { border-radius: var(--al-radius-sm); }
+.zt-prose :is(.al-code__bar, .al-table-wrap, .al-notice, .al-disclosure, .al-quote, .zt-figure, .al-stats, .al-steps, .al-cta, table) { font-family: var(--al-font-sans); font-size: var(--al-text-base); line-height: var(--al-leading-ui); }
+.zt-prose .al-quote blockquote { font-family: var(--al-font-serif); }
+.zt-prose :is(.al-steps, .al-stats) { padding-inline-start: 0; }
+.zt-prose :is(.al-steps, .al-stats) > li + li { margin-block-start: 0; }
+.zt-prose :is(.al-steps, .al-stats, .al-cta) { margin-block: var(--al-space-12); }
+.zt-prose :is(.al-code, .al-table-wrap, pre) { max-inline-size: none; }
+
+/* A heading's own link, shown on hover (insert_anchor_links = "right" or "left"). */
+.zt-prose .zola-anchor { margin-inline: var(--al-space-2); color: var(--al-color-text-muted); text-decoration: none; opacity: 0; transition: opacity var(--al-duration-fast) var(--al-ease-standard); }
+.zt-prose :is(h2, h3, h4):hover .zola-anchor, .zt-prose .zola-anchor:focus-visible { opacity: 1; }
+
+/* Code before the script turns it into the system's code block, or without it. */
+.zt-prose pre { padding: var(--al-space-4); overflow-x: auto; border: var(--al-border-hairline) solid var(--al-color-line); border-radius: var(--al-radius-sm); background: var(--al-color-surface-sunk); font-family: var(--al-font-mono); font-size: var(--al-text-sm); line-height: 1.7; direction: ltr; text-align: start; tab-size: 2; }
+.zt-prose .al-code pre { padding: var(--al-space-4); border: 0; border-radius: 0; background: none; }
+.zt-prose pre code { font: inherit; }
+/* Zola's marked lines (hl_lines) look as the system's. */
+.zt-prose pre mark { display: inline-block; box-sizing: content-box; min-inline-size: 100%; margin-inline: calc(-1 * var(--al-space-4)); padding-inline: calc(var(--al-space-4) - 2px) var(--al-space-4); border-inline-start: 2px solid var(--al-color-accent); background: var(--al-color-accent-wash); color: inherit; }
+/* Zola's line numbers (linenos). */
+.zt-prose pre table { border-collapse: collapse; border-spacing: 0; font: inherit; }
+.zt-prose pre :is(table, tbody, tr, td) { border: 0; background: none; }
+.zt-prose pre td { padding: 0; vertical-align: top; }
+.zt-prose pre td:first-child { padding-inline-end: var(--al-space-4); color: var(--al-color-text-muted); text-align: end; user-select: none; }
+.zt-prose pre td:first-child mark { margin: 0; padding: 0; border: 0; background: none; color: var(--al-color-accent); }
+.zt-prose pre td:last-child mark { margin-inline-start: 0; }
+
+/* Tables before the script wraps them, or without it. */
+.zt-prose table:not(.al-table, pre table, .zt-embed table) { inline-size: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.zt-prose table:not(.al-table, pre table, .zt-embed table) :is(th, td) { padding: var(--al-space-2) var(--al-space-3); border-block-end: var(--al-border-hairline) solid var(--al-color-line); text-align: start; }
+
+/* Footnotes. */
+.zt-prose .footnote-reference a { text-decoration: none; }
+.zt-prose .footnote-definition { display: flex; gap: var(--al-space-2); font-size: var(--al-text-sm); color: var(--al-color-text-muted); }
+.zt-prose :not(.footnote-definition) + .footnote-definition { margin-block-start: var(--al-space-12); padding-block-start: var(--al-space-4); border-block-start: var(--al-border-hairline) solid var(--al-color-line); }
+.zt-prose .footnote-definition > p { margin: 0; }
+.zt-prose .footnote-definition-label { font-variant-numeric: tabular-nums; }
+
+/* Task lists. */
+.zt-prose li:has(> input[type="checkbox"]) { list-style: none; margin-inline-start: -1.25em; }
+.zt-prose li > input[type="checkbox"] { margin-inline-end: var(--al-space-2); accent-color: var(--al-color-accent); }
+
+/* ---- the shortcodes ---------------------------------------------------------------------- */
+
+.zt-notice :is(p, ul, ol) { margin: 0; }
+.zt-notice .al-notice__body > * + * { margin-block-start: var(--al-space-1); }
+.zt-details .al-disclosure__body > * + * { margin-block-start: 1em; }
+.zt-figure { display: flex; flex-direction: column; gap: var(--al-space-2); }
+.zt-figure figcaption { font-size: var(--al-text-sm); color: var(--al-color-text-muted); }
+.zt-figure img { margin-inline: auto; }
+.zt-cta { margin-block: var(--al-space-12); }
+.zt-prose .al-button + :is(.al-button, .al-link) { margin-inline-start: var(--al-space-4); }
+.zt-command { inline-size: fit-content; max-inline-size: 100%; }
+
+/* Gallery: the page's images as thumbnails, as many to a row as fit. */
+.zt-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(var(--zt-gallery-min, 16rem), 100%), 1fr)); gap: var(--al-space-3); list-style: none; margin-inline: 0; padding: 0; max-inline-size: none; }
+.zt-prose .zt-gallery > li + li { margin-block-start: 0; }
+.zt-gallery__link { display: block; border-radius: var(--al-radius-sm); overflow: hidden; outline-offset: var(--al-border-focus-offset); }
+.zt-gallery__link img { inline-size: 100%; block-size: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 0; transition: opacity var(--al-duration-fast) var(--al-ease-standard); }
+.zt-gallery__link:hover img { opacity: 0.85; }
+
+/* Separator: a break between scenes, centred, in the muted colour. */
+.zt-separator { --zt-separator-color: var(--al-color-text-muted); display: flex; align-items: center; justify-content: center; margin-block: var(--zt-separator-gap); color: var(--zt-separator-color); line-height: 1; user-select: none; }
+.zt-prose > .zt-separator { margin-block: var(--zt-separator-gap); max-inline-size: var(--al-size-measure); }
+.zt-separator--gap-sm { --zt-separator-gap: var(--al-space-4); }
+.zt-separator--gap-md { --zt-separator-gap: var(--al-space-8); }
+.zt-separator--gap-lg { --zt-separator-gap: var(--al-space-12); }
+.zt-separator--gap-xl { --zt-separator-gap: var(--al-space-16); }
+.zt-separator--size-sm { font-size: var(--al-text-sm); }
+.zt-separator--size-base { font-size: var(--al-text-base); }
+.zt-separator--size-md { font-size: var(--al-text-md); }
+.zt-separator--size-lg { font-size: var(--al-text-lg); }
+.zt-separator--size-xl { font-size: var(--al-text-xl); }
+.zt-separator--size-2xl { font-size: var(--al-text-2xl); }
+.zt-separator--size-3xl { font-size: var(--al-text-3xl); }
+.zt-separator > span[aria-hidden] { letter-spacing: 0.5em; margin-inline-end: -0.5em; }
+.zt-separator__star { inline-size: 1em; block-size: 1em; fill: none; stroke: currentColor; stroke-width: 4; }
+.zt-separator--star { --zt-separator-color: var(--al-color-accent); }
+.zt-separator__line { display: block; block-size: var(--al-border-hairline); inline-size: var(--zt-separator-width); background: var(--zt-separator-color); }
+.zt-separator--gradient .zt-separator__line { background: linear-gradient(to right, transparent, var(--zt-separator-color), transparent); }
+.zt-separator--width-1-4 { --zt-separator-width: 25%; }
+.zt-separator--width-1-3 { --zt-separator-width: 33.333%; }
+.zt-separator--width-1-2 { --zt-separator-width: 50%; }
+.zt-separator--width-2-3 { --zt-separator-width: 66.667%; }
+.zt-separator--width-3-4 { --zt-separator-width: 75%; }
+.zt-separator--width-full { --zt-separator-width: 100%; }
+.zt-separator img { max-block-size: 4rem; inline-size: auto; object-fit: contain; opacity: 0.7; }
+@media (forced-colors: active) { .zt-separator__line { background: CanvasText; } }
+
+/* Embeds: a video at 16:9, a PDF, a gist, an Instagram post. */
+.zt-embed { margin-block: var(--al-space-8); }
+.zt-embed iframe { display: block; inline-size: 100%; border: var(--al-border-hairline) solid var(--al-color-line); border-radius: var(--al-radius-sm); background: var(--al-color-surface-sunk); }
+.zt-embed--video iframe { aspect-ratio: 16 / 9; block-size: auto; }
+.zt-embed--pdf { display: flex; flex-direction: column; gap: var(--al-space-2); }
+.zt-embed--pdf figcaption { font-size: var(--al-text-sm); }
+.zt-embed--pdf .al-link .al-icon { margin-inline-end: var(--al-space-1); vertical-align: -0.15em; }
+.zt-embed--gist { font-size: var(--al-text-sm); }
+/* A long gist scrolls in its box, not down the page. */
+.zt-embed--gist .gist .blob-wrapper { max-block-size: 28rem; overflow: auto; }
+/* GitHub's colours, in the system's: its surfaces in both themes, and the
+   syntax roles, whose contrast is measured (GitHub's own orange isn't enough). */
+.zt-embed--gist .gist .gist-file, .zt-embed--gist .gist .gist-data, .zt-embed--gist .gist .blob-wrapper, .zt-embed--gist .gist .highlight, .zt-embed--gist .gist td { background: var(--al-color-surface) !important; color: var(--al-color-text) !important; border-color: var(--al-color-line) !important; }
+.zt-embed--gist .gist .blob-num { color: var(--al-color-text-muted) !important; }
+.zt-embed--gist .gist .gist-meta { background: var(--al-color-surface-sunk) !important; color: var(--al-color-text-muted) !important; }
+.zt-embed--gist .gist .gist-meta a { color: var(--al-color-text) !important; }
+.zt-embed--gist .gist :is(.pl-c, .pl-c span) { color: var(--al-color-syntax-comment) !important; font-style: italic; }
+.zt-embed--gist .gist :is(.pl-k, .pl-kos.pl-k, .pl-s1.pl-k) { color: var(--al-color-syntax-keyword) !important; }
+.zt-embed--gist .gist :is(.pl-s, .pl-pds, .pl-s .pl-pse .pl-s1, .pl-sr) { color: var(--al-color-syntax-string) !important; }
+.zt-embed--gist .gist :is(.pl-c1, .pl-cce, .pl-smi.pl-c1) { color: var(--al-color-syntax-number) !important; }
+.zt-embed--gist .gist :is(.pl-en, .pl-smi.pl-en) { color: var(--al-color-syntax-function) !important; }
+.zt-embed--gist .gist :is(.pl-ent, .pl-smi.pl-ent, .pl-sc) { color: var(--al-color-syntax-tag) !important; }
+.zt-embed--gist .gist :is(.pl-e, .pl-v, .pl-smw) { color: var(--al-color-syntax-attribute) !important; }
+.zt-embed--gist .gist :is(.pl-s1, .pl-smi, .pl-kos, .pl-pse) { color: inherit !important; }
+.zt-embed--gist .gist .gist-file { margin: 0; border-color: var(--al-color-line); border-radius: var(--al-radius-sm); }
+.zt-instagram { margin: 0; padding: var(--al-space-5); border: var(--al-border-hairline) solid var(--al-color-line); border-radius: var(--al-radius-sm); background: var(--al-color-surface); color: var(--al-color-text); }
+.zt-embed--instagram iframe.instagram-media { border-radius: var(--al-radius-sm) !important; }
+
+/* Mermaid: the source until it's drawn, then the drawing, centred. */
+.zt-mermaid { margin-block: var(--al-space-8); padding: var(--al-space-4); overflow-x: auto; border: var(--al-border-hairline) solid var(--al-color-line); border-radius: var(--al-radius-sm); background: var(--al-color-surface); text-align: center; }
+.zt-mermaid pre.zt-mermaid__source { margin: 0; padding: 0; border: 0; background: none; font-size: var(--al-text-sm); text-align: start; white-space: pre; }
+.zt-mermaid[data-drawn] pre.zt-mermaid__source { white-space: normal; font-family: var(--al-font-sans); }
+.zt-mermaid svg { max-inline-size: 100%; block-size: auto; }
+/* Under reduced motion the system gives every element a tiny transition, and
+   transition-property is "all" by default, so Mermaid would measure its
+   labels mid-transition, at no width. Nothing in a diagram transitions.
+   (The duration is !important in a layer; the property isn't, so this wins.) */
+.zt-mermaid *, [id^="dzt-mermaid"], [id^="dzt-mermaid"] * { transition-property: none !important; }
+
+/* ---- search ------------------------------------------------------------------------------ */
+
+.zt-search { display: flex; flex-direction: column; gap: var(--al-space-2); max-inline-size: 36rem; }
+.zt-search__status { margin-block: var(--al-space-6) var(--al-space-4); font-size: var(--al-text-sm); }
+.zt-search__status:empty { display: none; }
+.zt-search__results mark { padding: 0; background: var(--al-color-accent-wash); color: inherit; }
+.zt-search__results .al-list__description { white-space: normal; }
+
+/* ---- syntax colour: Zola's classes (highlight_theme = "css") in the system's roles -------- */
+
+.z-code { color: var(--al-color-text); }
+.z-comment { color: var(--al-color-syntax-comment); font-style: italic; }
+.z-string, .z-string .z-punctuation { color: var(--al-color-syntax-string); }
+.z-constant.z-numeric, .z-constant.z-language, .z-constant.z-character.z-escape { color: var(--al-color-syntax-number); }
+.z-keyword, .z-storage { color: var(--al-color-syntax-keyword); }
+.z-keyword.z-operator, .z-punctuation { color: inherit; }
+.z-entity.z-name.z-function, .z-support.z-function, .z-variable.z-function { color: var(--al-color-syntax-function); }
+.z-entity.z-name.z-tag, .z-entity.z-name.z-type, .z-entity.z-name.z-class, .z-support.z-type, .z-support.z-class, .z-entity.z-other.z-inherited-class { color: var(--al-color-syntax-tag); }
+.z-entity.z-other.z-attribute-name, .z-support.z-type.z-property-name, .z-meta.z-mapping.z-key .z-string, .z-entity.z-name.z-tag.z-yaml, .z-meta.z-tag.z-table .z-entity, .z-variable.z-other.z-member { color: var(--al-color-syntax-attribute); }
+.z-markup.z-heading { color: var(--al-color-syntax-keyword); }
+.z-markup.z-bold { font-weight: var(--al-weight-semibold); }
+.z-markup.z-italic { font-style: italic; }
+.z-invalid { color: var(--al-color-danger); }
+@media (forced-colors: active) { .zt-prose pre [class*="z-"] { color: CanvasText; } }

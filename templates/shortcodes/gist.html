@@ -1,0 +1,11 @@
+{#- A GitHub Gist, embedded by GitHub's script, with a link to it for when
+    the script can't run: {{ gist(user="mos3abof", gist="4771874") }}
+    user  (string) Whose gist it is.
+    gist  (string) Its ID, from its address.
+    file  (string, optional) One of its files, to show only that one. -#}
+{%- set t = config.extra.i18n | get(key=lang, default=config.extra.i18n.en) -%}
+{%- set url = "https://gist.github.com/" ~ user ~ "/" ~ gist -%}
+<div class="zt-embed zt-embed--gist" dir="ltr">
+  <script src="{{ url }}.js{% if file is defined %}?file={{ file }}{% endif %}"></script>
+  <noscript><a class="al-link" href="{{ url }}">{{ t.gist_view }}</a></noscript>
+</div>

@@ -1,0 +1,12 @@
+{#- The footer's legal lines: the copyright, then any text, then the credit, a line each. -#}
+  <div class="al-footer__legal">
+    {%- set line = footer.copyright | get(key=lang, default=t.copyright) %}
+    <p>{{ line | replace(from="%year", to=year) | replace(from="%name", to=owner) | safe }}</p>
+    {%- set text = footer.text | get(key=lang, default="") %}
+    {%- if text %}
+    <p>{{ text | safe }}</p>
+    {%- endif %}
+    {%- if footer.credit %}
+    <p>{{ t.credit | replace(from="%zola", to='<a class="al-link al-link--muted" href="https://www.getzola.org" lang="en">Zola</a>') | replace(from="%arabesque", to='<a class="al-link al-link--muted" href="https://design.arabesquelabs.com" lang="en">Arabesque</a>') | safe }}</p>
+    {%- endif %}
+  </div>

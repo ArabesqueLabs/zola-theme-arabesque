@@ -1,0 +1,13 @@
+{#- A notice (components/notice): {% notice(kind="warning", title="Check your version") %}Markdown{% end %}
+    kind: info (the default), success, warning or danger (errors only). -#}
+{%- import "macros.html" as m -%}
+{%- set t = config.extra.i18n | get(key=lang, default=config.extra.i18n.en) -%}
+{%- set kind = kind | default(value="info") -%}
+{%- if kind == "success" %}{% set word = t.done %}{% elif kind == "warning" %}{% set word = t.warning %}{% elif kind == "danger" %}{% set word = t.error %}{% else %}{% set word = t.note %}{% endif -%}
+<div class="al-notice{% if kind != 'info' %} al-notice--{{ kind }}{% endif %} zt-notice">
+  {{ m::icon(name=kind) }}
+  <div class="al-notice__body">
+    <p class="al-notice__title">{{ title | default(value=word) }}</p>
+    {{ body | markdown | safe }}
+  </div>
+</div>

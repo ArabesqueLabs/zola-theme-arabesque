@@ -1,0 +1,17 @@
+{%- extends "base.html" -%}
+{%- import "macros.html" as m -%}
+
+{#- Not found: say so, and offer the way on. -#}
+
+{%- block title %}{{ t.not_found_title }} · {{ config.title }}{% endblock title -%}
+
+{%- block main %}
+<div class="al-page zt-main">
+  <div class="al-empty al-pattern al-pattern--quiet zt-not-found">
+    <div class="al-pattern__art" aria-hidden="true" data-pattern></div>
+    <h1 class="al-empty__title">{{ t.not_found_title }}</h1>
+    <p class="al-empty__text">{{ t.not_found_text }}</p>
+    <a class="al-button al-button--primary" href="{{ home_url | safe }}">{{ t.nothing_action }}</a>
+  </div>
+</div>
+{%- endblock main %}

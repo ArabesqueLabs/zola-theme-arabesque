@@ -1,0 +1,50 @@
+{%- extends "base.html" -%}
+{%- import "macros.html" as m -%}
+
+{#- A section: its title and introduction, its subsections, then its pages,
+    a page of them at a time when it's paginated. -#}
+
+{%- block main %}
+<div class="al-page zt-main">
+  {%- set ancestors = section.ancestors %}
+  {%- include "partials/breadcrumbs.html" %}
+  <header class="al-page-head zt-head">
+    <h1>{{ section.title }}</h1>
+    {%- if section.description %}
+    <p class="al-page-head__lede">{{ section.description }}</p>
+    {%- endif %}
+  </header>
+
+  {%- if section.content %}
+  <div class="al-prose zt-prose">{{ section.content | safe }}</div>
+  {%- endif %}
+
+  {%- if section.subsections | length > 0 %}
+  <ul class="al-grid zt-subsections" role="list">
+    {%- for path in section.subsections %}
+    {%- set sub = get_section(path=path, metadata_only=true) %}
+    <li><article class="al-card al-card--interactive zt-card">
+      <header class="al-card__header">
+        <h2 class="zt-card__title"><a class="zt-card__link" href="{{ sub.permalink | safe }}">{{ sub.title }}</a></h2>
+        {%- if sub.description %}<p class="al-card__description">{{ sub.description }}</p>{% endif %}
+      </header>
+    </article></li>
+    {%- endfor %}
+  </ul>
+  {%- endif %}
+
+  {%- if paginator is defined %}{% set pages = paginator.pages %}{% else %}{% set pages = section.pages %}{% endif %}
+  {%- if pages | length > 0 %}
+  {%- set dated = pages[0].date %}
+  {%- if paginator is defined %}{% include "partials/range.html" %}{% endif %}
+  {%- include "partials/page_list.html" %}
+  {%- if paginator is defined %}{% include "partials/pagination.html" %}{% endif %}
+  {%- elif not section.content and section.subsections | length == 0 %}
+  <div class="al-empty">
+    <p class="al-empty__title">{{ t.nothing_title }}</p>
+    <p class="al-empty__text">{{ t.nothing_text }}</p>
+    <a class="al-button al-button--primary" href="{{ home_url | safe }}">{{ t.nothing_action }}</a>
+  </div>
+  {%- endif %}
+</div>
+{%- endblock main %}

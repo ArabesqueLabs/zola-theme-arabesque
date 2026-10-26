@@ -1,0 +1,13 @@
+{#- Where this page sits (components/breadcrumbs): its sections, from the
+    home page, then itself. Set `ancestors` (section paths). -#}
+{%- if ancestors | length > 0 %}
+<nav class="al-breadcrumbs zt-breadcrumbs" aria-label="{{ t.breadcrumb }}">
+  <ol>
+    {%- for path in ancestors %}
+    {%- set a = get_section(path=path, metadata_only=true) %}
+    <li><a href="{{ a.permalink | safe }}">{% if loop.first %}{{ t.home }}{% else %}{{ a.title }}{% endif %}</a></li>
+    {%- endfor %}
+    <li><a href="{{ current.permalink | safe }}" aria-current="page">{{ current.title }}</a></li>
+  </ol>
+</nav>
+{%- endif %}

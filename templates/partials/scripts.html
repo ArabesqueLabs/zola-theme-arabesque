@@ -1,0 +1,3 @@
+{#- The words the theme's script writes, in this language, then the script. -#}
+<script type="application/json" id="zt-strings">{{ t | json_encode() | safe }}</script>
+<script type="module" src="{{ get_url(path='arabesque/theme/theme.js', cachebust=true) }}"></script>

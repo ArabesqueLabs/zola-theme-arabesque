@@ -1,0 +1,36 @@
+{#- A section's pages: set `pages`, `dated` when they're sorted by date,
+    and `heading` ("h2" by default) for their titles.
+    Dated pages are an article each, with the date first; others, a list. -#}
+{%- set h = heading | default(value="h2") -%}
+{%- if dated %}
+<ol class="zt-posts" role="list">
+  {%- for p in pages %}
+  <li>
+    <article class="zt-post" aria-labelledby="zt-post-{{ loop.index }}">
+      {%- include "partials/page_meta.html" %}
+      <{{ h }} class="zt-post__title" id="zt-post-{{ loop.index }}"><a href="{{ p.permalink | safe }}">{{ p.title }}</a>
+        {%- if p.draft %} <span class="al-badge al-badge--warning">{{ t.draft }}</span>{% endif %}</{{ h }}>
+      {%- if p.description %}
+      <p class="zt-post__summary">{{ p.description }}</p>
+      {%- elif p.summary %}
+      <div class="zt-post__summary">{{ p.summary | striptags | truncate(length=280) }}</div>
+      {%- endif %}
+    </article>
+  </li>
+  {%- endfor %}
+</ol>
+{%- else %}
+<ul class="al-list zt-list" role="list">
+  {%- for p in pages %}
+  <li>
+    <a class="al-list__item" href="{{ p.permalink | safe }}"{% if current_url is defined and current_url == p.permalink %} aria-current="page"{% endif %}>
+      <span class="al-list__text">
+        <span class="al-list__title">{{ p.title }}</span>
+        {%- if p.description %}<span class="al-list__description">{{ p.description }}</span>{% endif %}
+      </span>
+      {{ m::icon(name="chevron", class="al-mirror zt-list__chevron") }}
+    </a>
+  </li>
+  {%- endfor %}
+</ul>
+{%- endif %}

@@ -1,0 +1,36 @@
+{%- extends "base.html" -%}
+{%- import "macros.html" as m -%}
+
+{#- A taxonomy's terms, with how many pages each has. -#}
+
+{%- block title %}{{ t | get(key="taxonomy_" ~ taxonomy.name, default=taxonomy.name | capitalize) }} · {{ config.title }}{% endblock title -%}
+
+{%- block main %}
+{%- set name = t | get(key="taxonomy_" ~ taxonomy.name, default=taxonomy.name | capitalize) %}
+<div class="al-page zt-main">
+  <nav class="al-breadcrumbs zt-breadcrumbs" aria-label="{{ t.breadcrumb }}">
+    <ol>
+      <li><a href="{{ home_url | safe }}">{{ t.home }}</a></li>
+      <li><a href="{{ current_url | safe }}" aria-current="page">{{ name }}</a></li>
+    </ol>
+  </nav>
+  <header class="al-page-head zt-head"><h1>{{ name }}</h1></header>
+  {%- if terms | length > 0 %}
+  <ul class="al-list zt-list" role="list">
+    {%- for term in terms %}
+    <li>
+      <a class="al-list__item" href="{{ term.permalink | safe }}">
+        <span class="al-list__text"><span class="al-list__title">{{ term.name }}</span></span>
+        <span class="al-list__end"><span class="al-badge al-badge--count"><bdi>{{ term.pages | length }}</bdi><span class="al-visually-hidden"> {{ t.pages_count }}</span></span></span>
+      </a>
+    </li>
+    {%- endfor %}
+  </ul>
+  {%- else %}
+  <div class="al-empty">
+    <p class="al-empty__title">{{ t.nothing_title }}</p>
+    <a class="al-button al-button--primary" href="{{ home_url | safe }}">{{ t.nothing_action }}</a>
+  </div>
+  {%- endif %}
+</div>
+{%- endblock main %}

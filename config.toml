@@ -1,0 +1,350 @@
+# The theme's demo site: every template, in English and Arabic.
+# Run it with `zola serve` here. To use the theme in your own site, see the README.
+
+base_url = "https://arabesquelabs.github.io/zola-theme-arabesque"
+title = "Arabesque for Zola"
+description = "A calm, accessible Zola theme in English and Arabic, built on the Arabesque design system."
+author = "Arabesque Labs"
+default_language = "en"
+
+compile_sass = false
+generate_feeds = true
+feed_filenames = ["atom.xml"]
+build_search_index = true
+
+taxonomies = [
+  { name = "tags", paginate_by = 10, feed = true },
+]
+
+[markdown]
+highlight_code = true
+# The theme colours code with the system's syntax roles (theme.css):
+highlight_theme = "css"
+smart_punctuation = true
+external_links_no_referrer = true
+
+[search]
+index_format = "fuse_json"
+
+[languages.ar]
+title = "آرابيسك لـ Zola"
+description = "قالب هادئ وسهل الوصول لـ Zola بالعربية والإنجليزية، مبني على نظام التصميم آرابيسك."
+generate_feeds = true
+feed_filenames = ["atom.xml"]
+build_search_index = true
+taxonomies = [
+  { name = "tags", paginate_by = 10, feed = true },
+]
+
+[languages.ar.search]
+index_format = "fuse_json"
+
+# The theme's settings. A site that uses the theme gets these from
+# theme.toml and sets only what differs; this site *is* the theme, so it
+# repeats them all (Zola merges theme.toml's [extra] only into a site that
+# names a theme). Keep them in step with theme.toml.
+[extra]
+
+# Languages written right to left: <html dir="rtl"> for these.
+rtl_languages = ["ar", "fa", "he", "ur", "ps", "ckb", "sd", "ug", "yi", "dv"]
+
+# The header's links, per language: name, and url as an internal link
+# ("@/blog/_index.md"), a path ("/tags/") or an address.
+#   [[extra.menu.en]]
+#   name = "Blog"
+#   url = "@/blog/_index.md"
+[extra.menu]
+
+# Each language named in itself, for the language link ("العربية", "English").
+[extra.language_names]
+en = "English"
+ar = "العربية"
+
+# The language link shows the other language's own letter, in a key: set one
+# per language (a language without one shows the translate icon).
+[extra.language_glyphs]
+en = "En"
+ar = "ع"
+
+[extra.header]
+# An image beside the site's title in the header (a path in static/), or "".
+logo = "arabesque/theme/logo.svg"
+# Keep the header at the top of the window as the page scrolls.
+sticky = true
+# Show the theme button, which cycles through system, light and dark.
+theme_toggle = true
+# Show the language link, when the site has more than one language.
+language_link = true
+
+# One action that stays in the bar at every width, per language:
+#   [extra.header.action.en]
+#   name = "Subscribe"
+#   url = "@/subscribe.md"
+[extra.header.action]
+
+[extra.home]
+# The section whose latest pages the home page lists ("blog/_index.md"),
+# or "" for none. It must exist, in every language.
+section = "blog/_index.md"
+# How many of them.
+count = 5
+# Draw the pattern across the hero (js/pattern.js), with its focal tile.
+pattern = true
+# Let the hero's pattern draw itself in once on load (never under reduced motion).
+animate = true
+
+[extra.page]
+# Show "On this page" beside a page with at least this many h2 headings;
+# 0 turns it off. A page can override it with `extra.toc = true/false`.
+toc_min_headings = 4
+# Show the reading time beside the date.
+reading_time = true
+# Show links to the newer and older page at the foot of a page in a sorted section.
+page_nav = true
+# Show "Back to top" once the page has scrolled this many screens.
+back_to_top_after = 0.5
+
+[extra.search]
+# A page that uses templates/search.html (see the README), as an internal
+# link ("@/search.md"), or "" for no search. Needs `build_search_index = true`
+# and `[search] index_format = "fuse_json"` in config.toml.
+page = "@/search.md"
+
+[extra.footer]
+# Show the site's name (and logo) in the footer; the header already has it.
+lockup = false
+# Show "Built with Zola and the Arabesque design system."
+credit = false
+# Link to the Atom feed (an icon after the footer's links), when one is generated.
+feed_link = true
+
+# Links in the footer, per language, as the header's menu; with an icon
+# ("github", "feed", or any of the design system's), a link is that icon,
+# named by its name:
+#   [[extra.footer.links.en]]
+#   name = "Privacy"
+#   url = "@/privacy.md"
+[extra.footer.links]
+
+# A line under the copyright, per language (Markdown isn't rendered; HTML is kept):
+#   [extra.footer.text]
+#   en = "Written in London."
+[extra.footer.text]
+en = 'Made with ♥ by <a href="https://mosab.co.uk">Mosab</a> at <a href="https://arabesquelabs.com">Arabesque Labs</a>'
+ar = 'صُنع بـ ♥ على يد <a href="https://mosab.co.uk">مصعب</a> في <a href="https://arabesquelabs.com">معامل آرابيسك</a>'
+
+# The copyright line in place of the theme's ("© %year %name."), per language;
+# HTML is kept, and %year and %name are filled in.
+[extra.footer.copyright]
+en = 'A <a href="https://www.getzola.org" lang="en">Zola</a> theme using <a href="https://design.arabesquelabs.com">Arabesque design system</a> · Released under the <a href="https://github.com/ArabesqueLabs/zola-theme-arabesque/blob/main/LICENSE">MIT license</a>'
+ar = 'قالب <a href="https://www.getzola.org" lang="en">Zola</a> يستخدم <a href="https://design.arabesquelabs.com">نظام التصميم آرابيسك</a> · منشور بموجب <a href="https://github.com/ArabesqueLabs/zola-theme-arabesque/blob/main/LICENSE">رخصة MIT</a>'
+
+# The words the theme writes, per language. Add [extra.i18n.<code>] for
+# another language; a missing language falls back to English.
+[extra.i18n.en]
+skip = "Skip to content"
+sections = "Sections"
+menu = "Menu"
+theme_to_dark = "Switch to dark theme"
+theme_to_light = "Switch to light theme"
+theme_to_system = "Follow the system's theme"
+home = "Home"
+breadcrumb = "Breadcrumb"
+on_this_page = "On this page"
+back_to_top = "Back to top"
+pagination = "Pagination"
+previous = "Previous"
+next = "Next"
+page_n = "Page %n"
+range = "%from to %to of %total"
+more_pages = "More to read"
+newer = "Newer"
+older = "Older"
+published = "Published"
+updated = "Updated"
+reading_time = "%n min read"
+by = "By"
+draft = "Draft"
+latest = "Latest"
+see_all = "See all"
+pages_count = "pages"
+nothing_title = "Nothing here yet"
+nothing_text = "This section has no pages yet."
+nothing_action = "Go to the home page"
+not_found_title = "Page not found"
+not_found_text = "The address may be mistyped, or the page may have moved."
+search = "Search"
+search_label = "Search this site"
+search_clear = "Clear search"
+search_loading = "Searching…"
+search_failed = "Couldn't load the search index. Check your connection, then try again."
+search_retry = "Try again"
+search_none_title = "No results"
+search_none_text = "Nothing matches “%q”. Try fewer words, or different ones."
+search_results_one = "1 result"
+search_results_two = "%n results"
+search_results_few = "%n results"
+search_results_many = "%n results"
+search_results_other = "%n results"
+search_results_zero = "No results"
+copy = "Copy"
+copied = "Copied"
+copy_failed = "Couldn't copy. The text is selected, so you can copy it yourself."
+code = "Code"
+table = "Table"
+new_tab = "(opens in a new tab)"
+feed = "Atom feed"
+footer_nav = "More"
+copyright = "© %year %name."
+list_sep = ", "
+credit = "Built with %zola and the %arabesque design system."
+note = "Note"
+done = "Done"
+warning = "Warning"
+error = "Error"
+date_format = "%-d %B %Y"
+date_locale = "en_GB"
+taxonomy_tags = "Tags"
+taxonomy_categories = "Categories"
+taxonomy_authors = "Authors"
+gallery_item = "Image %n of %total"
+video = "YouTube video"
+pdf = "PDF document"
+pdf_download = "Download the PDF"
+gist_view = "See the gist on GitHub"
+instagram_view = "See this post on Instagram"
+instagram = "Instagram post"
+
+[extra.i18n.ar]
+skip = "انتقل إلى المحتوى"
+sections = "الأقسام"
+menu = "القائمة"
+theme_to_dark = "التبديل إلى المظهر الداكن"
+theme_to_light = "التبديل إلى المظهر الفاتح"
+theme_to_system = "اتبع مظهر النظام"
+home = "الرئيسية"
+breadcrumb = "مسار التنقل"
+on_this_page = "في هذه الصفحة"
+back_to_top = "العودة إلى الأعلى"
+pagination = "التنقل بين الصفحات"
+previous = "السابق"
+next = "التالي"
+page_n = "الصفحة %n"
+range = "%from إلى %to من %total"
+more_pages = "للمزيد من القراءة"
+newer = "الأحدث"
+older = "الأقدم"
+published = "نُشر"
+updated = "حُدّث"
+reading_time = "قراءة في %n د"
+by = "بقلم"
+draft = "مسودة"
+latest = "الأحدث"
+see_all = "عرض الكل"
+pages_count = "صفحات"
+nothing_title = "لا شيء هنا بعد"
+nothing_text = "لا صفحات في هذا القسم بعد."
+nothing_action = "اذهب إلى الصفحة الرئيسية"
+not_found_title = "الصفحة غير موجودة"
+not_found_text = "ربما كُتب العنوان خطأً، أو نُقلت الصفحة."
+search = "بحث"
+search_label = "ابحث في هذا الموقع"
+search_clear = "امسح البحث"
+search_loading = "جارٍ البحث…"
+search_failed = "تعذّر تحميل فهرس البحث. تحقّق من اتصالك، ثم حاول مجددًا."
+search_retry = "حاول مجددًا"
+search_none_title = "لا نتائج"
+search_none_text = "لا شيء يطابق «%q». جرّب كلمات أقل، أو كلمات أخرى."
+search_results_zero = "لا نتائج"
+search_results_one = "نتيجة واحدة"
+search_results_two = "نتيجتان"
+search_results_few = "%n نتائج"
+search_results_many = "%n نتيجة"
+search_results_other = "%n نتيجة"
+copy = "نسخ"
+copied = "نُسخ"
+copy_failed = "تعذّر النسخ. النص محدد، فيمكنك نسخه بنفسك."
+code = "شيفرة"
+table = "جدول"
+new_tab = "(يُفتح في علامة تبويب جديدة)"
+feed = "خلاصة Atom"
+footer_nav = "المزيد"
+copyright = "© %year %name."
+list_sep = "، "
+credit = "بُني باستخدام %zola ونظام التصميم %arabesque."
+note = "ملاحظة"
+done = "تم"
+warning = "تنبيه"
+error = "خطأ"
+date_format = "%-d %B %Y"
+date_locale = "ar_EG"
+taxonomy_tags = "الوسوم"
+taxonomy_categories = "التصنيفات"
+taxonomy_authors = "الكتّاب"
+gallery_item = "الصورة %n من %total"
+video = "فيديو على YouTube"
+pdf = "مستند PDF"
+pdf_download = "نزّل ملف PDF"
+gist_view = "اعرض الـ gist على GitHub"
+instagram_view = "اعرض هذا المنشور على Instagram"
+instagram = "منشور على Instagram"
+
+# The demo's menu and footer links.
+
+[[extra.menu.en]]
+name = "About"
+url = "@/about.md"
+
+[[extra.menu.en]]
+name = "Blog"
+url = "@/blog/_index.md"
+
+[[extra.menu.en]]
+name = "Shortcodes"
+url = "@/docs/shortcodes.md"
+
+[[extra.menu.en]]
+name = "Docs"
+url = "@/docs/_index.md"
+
+[[extra.menu.ar]]
+name = "عن القالب"
+url = "@/about.md"
+
+[[extra.menu.ar]]
+name = "المدونة"
+url = "@/blog/_index.md"
+
+[[extra.menu.ar]]
+name = "الرموز القصيرة"
+url = "@/docs/shortcodes.md"
+
+[[extra.menu.ar]]
+name = "الدليل"
+url = "@/docs/_index.md"
+
+[[extra.footer.links.en]]
+name = "Archive"
+url = "@/archive.md"
+
+[[extra.footer.links.en]]
+name = "Tags"
+url = "/tags/"
+
+[[extra.footer.links.en]]
+name = "Source on GitHub"
+url = "https://github.com/ArabesqueLabs/zola-theme-arabesque"
+icon = "github"
+
+[[extra.footer.links.ar]]
+name = "الأرشيف"
+url = "@/archive.md"
+
+[[extra.footer.links.ar]]
+name = "الوسوم"
+url = "/ar/tags/"
+
+[[extra.footer.links.ar]]
+name = "الشيفرة المصدرية على GitHub"
+url = "https://github.com/ArabesqueLabs/zola-theme-arabesque"
+icon = "github"

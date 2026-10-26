@@ -1,0 +1,16 @@
+{#- The header's links, in the bar and in the folded menu. The current page
+    is aria-current="page"; else the closest section it's inside of (the
+    longest link the address starts with), "true". -#}
+{%- set_global closest = "" -%}
+{%- if current_url is defined -%}
+{%- for item in menu -%}
+{%- set href = m::url(path=item.url, lang=lang) -%}
+{%- if href != home_url and current_url is starting_with(href) and href | length > closest | length %}{% set_global closest = href %}{% endif -%}
+{%- endfor -%}
+{%- endif -%}
+{%- for item in menu -%}
+{%- set href = m::url(path=item.url, lang=lang) -%}
+<li><a href="{{ href | safe }}"
+  {%- if current_url is defined and current_url == href %} aria-current="page"
+  {%- elif href == closest %} aria-current="true"{% endif %}>{{ item.name }}</a></li>
+{%- endfor -%}
