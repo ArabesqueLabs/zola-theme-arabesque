@@ -1,0 +1,60 @@
+{%- extends "base.html" -%}
+{%- import "macros.html" as m -%}
+
+{#- A section of projects, as cards: each one's picture, title, summary,
+    year, and links to its site and source; then each subsection's, under
+    its title. Use it for a section, with project.html for its pages:
+      +++
+      title = "Projects"
+      sort_by = "weight"
+      template = "projects.html"
+      page_template = "project.html"
+      +++
+    and, in each project's front matter:
+      [extra]
+      image = "cover.jpg"                    # beside the page, in static/, or an address
+      year = "2024"
+      website = "https://…"
+      source = "https://github.com/…"   -#}
+
+{%- block main %}
+<div class="al-page zt-main">
+  {%- set ancestors = section.ancestors %}
+  {%- include "partials/breadcrumbs.html" %}
+  <header class="al-page-head zt-head">
+    <h1>{{ section.title }}</h1>
+    {%- if section.description %}
+    <p class="al-page-head__lede">{{ section.description }}</p>
+    {%- endif %}
+  </header>
+
+  {%- if section.content %}
+  <div class="al-prose zt-prose">{{ section.content | safe }}</div>
+  {%- endif %}
+
+  {%- if section.pages | length > 0 %}
+  {%- set pages = section.pages %}{% set heading = "h2" %}
+  {%- include "partials/project_cards.html" %}
+  {%- endif %}
+
+  {%- for path in section.subsections %}
+  {%- set sub = get_section(path=path) %}
+  {%- if sub.pages | length > 0 %}
+  <section class="zt-projects-group" aria-labelledby="zt-group-{{ loop.index }}">
+    <h2 class="zt-projects-group__title" id="zt-group-{{ loop.index }}">{{ sub.title }}</h2>
+    {%- if sub.description %}<p class="zt-projects-group__lede">{{ sub.description }}</p>{% endif %}
+    {%- set pages = sub.pages %}{% set heading = "h3" %}
+    {%- include "partials/project_cards.html" %}
+  </section>
+  {%- endif %}
+  {%- endfor %}
+
+  {%- if section.pages | length == 0 and section.subsections | length == 0 and not section.content %}
+  <div class="al-empty">
+    <p class="al-empty__title">{{ t.nothing_title }}</p>
+    <p class="al-empty__text">{{ t.nothing_text }}</p>
+    <a class="al-button al-button--primary" href="{{ home_url | safe }}">{{ t.nothing_action }}</a>
+  </div>
+  {%- endif %}
+</div>
+{%- endblock main %}

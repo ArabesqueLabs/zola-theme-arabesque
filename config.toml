@@ -166,7 +166,7 @@ reading_time = "%n min read"
 by = "By"
 draft = "Draft"
 latest = "Latest"
-see_all = "See all"
+see_all = "See all posts"
 pages_count = "pages"
 nothing_title = "Nothing here yet"
 nothing_text = "This section has no pages yet."
@@ -214,6 +214,8 @@ pdf_download = "Download the PDF"
 gist_view = "See the gist on GitHub"
 instagram_view = "See this post on Instagram"
 instagram = "Instagram post"
+project_website = "Website"
+project_source = "Source"
 
 [extra.i18n.ar]
 skip = "انتقل إلى المحتوى"
@@ -240,7 +242,7 @@ reading_time = "قراءة في %n د"
 by = "بقلم"
 draft = "مسودة"
 latest = "الأحدث"
-see_all = "عرض الكل"
+see_all = "عرض كل المقالات"
 pages_count = "صفحات"
 nothing_title = "لا شيء هنا بعد"
 nothing_text = "لا صفحات في هذا القسم بعد."
@@ -288,6 +290,8 @@ pdf_download = "نزّل ملف PDF"
 gist_view = "اعرض الـ gist على GitHub"
 instagram_view = "اعرض هذا المنشور على Instagram"
 instagram = "منشور على Instagram"
+project_website = "الموقع"
+project_source = "الشيفرة المصدرية"
 
 # The demo's menu and footer links.
 
@@ -298,6 +302,10 @@ url = "@/about.md"
 [[extra.menu.en]]
 name = "Blog"
 url = "@/blog/_index.md"
+
+[[extra.menu.en]]
+name = "Projects"
+url = "@/projects/_index.md"
 
 [[extra.menu.en]]
 name = "Shortcodes"
@@ -314,6 +322,10 @@ url = "@/about.md"
 [[extra.menu.ar]]
 name = "المدونة"
 url = "@/blog/_index.md"
+
+[[extra.menu.ar]]
+name = "المشاريع"
+url = "@/projects/_index.md"
 
 [[extra.menu.ar]]
 name = "الرموز القصيرة"

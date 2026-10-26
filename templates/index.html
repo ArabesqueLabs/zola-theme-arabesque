@@ -83,13 +83,14 @@
         <p class="al-eyebrow">{{ t.latest }}</p>
         <h2 class="al-section__title" id="zt-latest">{{ listed.title | default(value=t.latest) }}</h2>
       </hgroup>
-      {%- if listed.pages | length > pages | length or listed.subsections | length > 0 %}
-      <a class="al-link al-link--arrow" href="{{ listed.permalink | safe }}">{{ t.see_all }}{{ m::icon(name="arrow", class="al-mirror") }}</a>
-      {%- endif %}
     </div>
     {%- set dated = pages[0].date %}
     {%- set heading = "h3" %}
     {%- include "partials/page_list.html" %}
+    {#- More than the list shows: a link to the rest, below it. #}
+    {%- if listed.pages | length > pages | length or listed.subsections | length > 0 %}
+    <p class="zt-section-foot"><a class="al-link al-link--arrow" href="{{ listed.permalink | safe }}">{{ t.see_all }}{{ m::icon(name="arrow", class="al-mirror") }}</a></p>
+    {%- endif %}
   </div>
 </section>
 {%- endif %}
