@@ -1,0 +1,9 @@
+{#- A project's year, and links to its site and its source: set `pr`. -#}
+{%- set x = pr.extra -%}
+{%- if x.year or x.website or x.source %}
+<p class="zt-project__links">
+  {%- if x.year %}<span class="zt-project__year">{{ m::icon(name="calendar", class="al-icon--sm") }}<bdi>{{ x.year }}</bdi></span>{% endif %}
+  {%- if x.website %}<a class="al-link zt-project__link" href="{{ x.website }}">{{ t.project_website }}{{ m::icon(name="external", class="al-icon--sm") }}</a>{% endif %}
+  {%- if x.source %}<a class="al-link zt-project__link" href="{{ x.source }}">{% if x.source is containing("github.com") %}{{ m::icon(name="github", class="al-icon--sm") }}{% endif %}{{ t.project_source }}</a>{% endif %}
+</p>
+{%- endif %}

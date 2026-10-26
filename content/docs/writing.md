@@ -50,6 +50,38 @@ Two templates go beyond Zola's usual ones. Give a page one with `template`:
 - **`archive.html`**: every page of a section, by year. Set `section = "blog/_index.md"` under `[extra]`; the home page's section by default.
 - **`search.html`**: search, in the browser, over the site's index for the page's language. Needs `build_search_index = true` and `[search] index_format = "fuse_json"` for each language, which indexes Arabic as well as English.
 
+## Projects
+
+A section of projects shows its pages as cards: each one's picture, title, description, year, and links to its site and source. Its subsections follow, each under its own title, as the [Projects](@/projects/_index.md) page shows with its experiments. Give the section two templates, one for itself and one for its pages:
+
+```toml
++++
+title = "Projects"
+sort_by = "weight"
+template = "projects.html"
+page_template = "project.html"
++++
+```
+
+Each project is a page, with these under `[extra]`, all optional:
+
+```toml
++++
+title = "Lantern"
+weight = 10
+description = "One sentence: on the card, and as the lede on its page."
+
+[extra]
+image = "cover.jpg"   # beside the page (a page bundle), in static/ ("/img/x.png"), or an address
+image_alt = ""        # on the project's own page; on the card, the picture is decoration
+year = "2025"
+website = "https://example.com"
+source = "https://github.com/me/lantern"   # a GitHub address gets GitHub's mark
++++
+```
+
+A project with no picture shows its title's first letter on the quiet pattern. On its own page, the year and links sit under the title, with the picture below them; the page's content follows, as on any page. The links' words are `project_website` and `project_source` in `[extra.i18n.<lang>]`.
+
 ## Code
 
 Code blocks become the system's code block, with a copy button and their language in the bar. Mark the lines that matter with `hl_lines`:

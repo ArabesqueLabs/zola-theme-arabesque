@@ -30,6 +30,7 @@
       {%- endif %}
       {%- set p = page %}{% set full_meta = true %}
       {%- include "partials/page_meta.html" %}
+      {%- block doc_head %}{% endblock doc_head %}
     </header>
     <div class="al-prose zt-prose">{{ page.content | safe }}</div>
     {%- include "partials/page_terms.html" %}

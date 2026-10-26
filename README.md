@@ -167,7 +167,31 @@ In a page's front matter, under `[extra]`: `toc = true | false` overrides the co
 
 ## Templates
 
-Zola's own: `index.html`, `section.html`, `page.html`, `taxonomy_list.html`, `taxonomy_single.html` and `404.html`. And two for a page's `template`:
+Zola's own: `index.html`, `section.html`, `page.html`, `taxonomy_list.html`, `taxonomy_single.html` and `404.html`. Two for a section of projects:
+
+- **`projects.html`** and **`project.html`**: a section's pages as cards, each with its picture (or its first letter on the quiet pattern), summary, year, and links to its site and source; then each subsection's, under its title. On a project's own page, the year and links sit under its title, with the picture below them.
+
+  ```toml
+  +++
+  title = "Projects"
+  sort_by = "weight"
+  template = "projects.html"
+  page_template = "project.html"
+  +++
+  ```
+
+  and in each project's front matter, all optional:
+
+  ```toml
+  [extra]
+  image = "cover.jpg"   # beside the page (a page bundle), in static/ ("/img/x.png"), or an address
+  image_alt = ""        # on the project's own page; the card's picture is decoration
+  year = "2024"
+  website = "https://example.com"
+  source = "https://github.com/me/project"   # a GitHub address gets GitHub's mark
+  ```
+
+And two for a page's `template`:
 
 - **`archive.html`**: every page of a section by year. `[extra] section = "blog/_index.md"`; the home page's section by default.
 - **`search.html`**: search in the browser over Zola's index, as people type, with the query in the address (`?q=`). Arabic is matched without its vowel marks, and with its letter variants folded. For each language:

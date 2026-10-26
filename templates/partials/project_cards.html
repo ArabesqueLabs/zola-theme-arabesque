@@ -1,0 +1,31 @@
+{#- Projects as cards: set `pages`, and `heading` ("h2" by default) for
+    their titles. Each card is a link to its page as a whole; its site and
+    source are links of their own, above that. With no picture, the card
+    shows the title's first letter on the quiet pattern. -#}
+{%- set h = heading | default(value="h2") -%}
+<ul class="zt-projects" role="list">
+  {%- for p in pages %}
+  {%- set image = p.extra.image | default(value="") %}
+  {%- if image is starting_with("http") %}{% set image_url = image %}
+  {%- elif image is starting_with("/") %}{% set image_url = get_url(path=image) %}
+  {%- elif image %}{% set image_url = p.permalink ~ image %}{% endif %}
+  <li>
+    <article class="al-card al-card--interactive zt-card zt-project" aria-labelledby="zt-project-{{ h }}-{{ loop.index }}">
+      {%- if image %}
+      <img class="zt-project__cover" src="{{ image_url | safe }}" alt="" loading="lazy" decoding="async">
+      {%- else %}
+      <div class="zt-project__cover al-pattern al-pattern--quiet" aria-hidden="true">
+        <div class="al-pattern__art" data-pattern></div>
+        <span class="zt-project__initial">{{ p.title | truncate(length=1, end="") }}</span>
+      </div>
+      {%- endif %}
+      <div class="zt-project__body">
+        <{{ h }} class="zt-project__title" id="zt-project-{{ h }}-{{ loop.index }}"><a class="zt-card__link" href="{{ p.permalink | safe }}">{{ p.title }}</a>
+          {%- if p.draft %} <span class="al-badge al-badge--warning">{{ t.draft }}</span>{% endif %}</{{ h }}>
+        {%- if p.description %}<p class="zt-project__summary">{{ p.description }}</p>{% endif %}
+        {%- set pr = p %}{% include "partials/project_links.html" %}
+      </div>
+    </article>
+  </li>
+  {%- endfor %}
+</ul>

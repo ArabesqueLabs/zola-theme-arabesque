@@ -96,6 +96,7 @@ main:focus { outline: none; }
 .zt-hero:not(.al-pattern) .zt-hero__lede { max-inline-size: var(--al-size-measure); }
 
 .zt-section-head { align-items: end; margin-block-end: var(--al-space-8); }
+.zt-section-foot { margin: var(--al-space-6) 0 0; }
 
 /* ---- lists of pages ---------------------------------------------------------------------- */
 
@@ -127,6 +128,28 @@ main:focus { outline: none; }
 
 .zt-archive + .zt-archive { margin-block-start: var(--al-space-12); }
 .zt-archive__year { margin-block-end: var(--al-space-4); font-size: var(--al-text-2xl); font-variant-numeric: tabular-nums; }
+
+/* Projects: a card each, its picture across the top, as many to a row as fit.
+   The card is one link (.zt-card__link); its site and source sit above it. */
+.zt-projects { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(18rem, 100%), 1fr)); gap: var(--al-space-6); list-style: none; margin: 0; padding: 0; }
+.zt-project { gap: 0; padding: 0; overflow: hidden; }
+.zt-project__cover { display: block; inline-size: 100%; block-size: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border-block-end: var(--al-border-hairline) solid var(--al-color-line); background: var(--al-color-surface-sunk); }
+.zt-project__cover.al-pattern { display: grid; place-items: center; }
+.zt-project__initial { position: relative; font-family: var(--al-font-display); font-size: var(--al-text-3xl); line-height: 1; color: var(--al-color-text-muted); }
+.zt-project__body { display: flex; flex: 1; flex-direction: column; gap: var(--al-space-2); padding: var(--al-space-5); }
+.zt-project__title { font-size: var(--al-text-xl); font-weight: var(--al-weight-medium); letter-spacing: var(--al-tracking-none); }
+.zt-project:hover .zt-card__link { color: var(--al-color-accent); }
+.zt-project__summary { flex: 1; margin: 0; font-size: var(--al-text-base); color: var(--al-color-text-muted); }
+.zt-project__links { display: flex; flex-wrap: wrap; align-items: center; gap: var(--al-space-2) var(--al-space-4); margin: var(--al-space-2) 0 0; font-size: var(--al-text-sm); }
+.zt-project__year { display: inline-flex; align-items: center; gap: var(--al-space-1); color: var(--al-color-text-muted); font-variant-numeric: tabular-nums; }
+.zt-project__link { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: var(--al-space-1); }
+.zt-projects-group { margin-block-start: var(--al-space-12); }
+.zt-projects-group__title { font-size: var(--al-text-2xl); }
+.zt-projects-group__lede { margin-block: var(--al-space-2) 0; color: var(--al-color-text-muted); }
+.zt-projects-group > .zt-projects { margin-block-start: var(--al-space-6); }
+/* On its own page: the picture at its natural size, up to the text's width. */
+.zt-project-cover { max-inline-size: min(100%, 46rem); block-size: auto; border: var(--al-border-hairline) solid var(--al-color-line); border-radius: var(--al-radius-sm); }
+.zt-doc__head .zt-project__links { margin: 0; }
 
 /* ---- a page ------------------------------------------------------------------------------ */
 
@@ -223,6 +246,17 @@ main:focus { outline: none; }
 .zt-prose :not(.footnote-definition) + .footnote-definition { margin-block-start: var(--al-space-12); padding-block-start: var(--al-space-4); border-block-start: var(--al-border-hairline) solid var(--al-color-line); }
 .zt-prose .footnote-definition > p { margin: 0; }
 .zt-prose .footnote-definition-label { font-variant-numeric: tabular-nums; }
+
+/* Inline HTML that Markdown has no syntax for: keys as the system's,
+   a highlight in the accent's wash, a raised or lowered figure that
+   doesn't open the line's leading, and an abbreviation that says it has a title. */
+.zt-prose kbd:not(.al-kbd) { display: inline-block; min-inline-size: 1.5em; padding: 0.05em 0.4em; border: var(--al-border-hairline) solid var(--al-color-line-strong); border-block-end-width: 2px; border-radius: var(--al-radius-sm); background: var(--al-color-surface); font-size: var(--al-text-xs); line-height: 1.5; text-align: center; white-space: nowrap; vertical-align: 0.1em; }
+.zt-prose mark { padding-inline: 0.15em; border-radius: var(--al-radius-sm); background: var(--al-color-accent-wash); color: inherit; }
+.zt-prose :is(sub, sup) { font-size: 0.75em; line-height: 0; }
+.zt-prose abbr[title] { text-decoration: underline dotted; text-underline-offset: 0.2em; cursor: help; }
+.zt-prose del { color: var(--al-color-text-muted); }
+/* A list item of more than one paragraph (a loose list): the space between its blocks, as between paragraphs. */
+.zt-prose li > :is(p, div, pre, ul, ol) + * { margin-block-start: 0.75em; }
 
 /* Task lists. */
 .zt-prose li:has(> input[type="checkbox"]) { list-style: none; margin-inline-start: -1.25em; }
