@@ -30,3 +30,5 @@ tags = ["من اليمين إلى اليسار", "العربية", "سهولة �
 ```css
 .al-mirror:dir(rtl) { transform: scaleX(-1); }
 ```
+
+اقرأ المقالة نفسها [بالإنجليزية](@/blog/right-to-left.md).
