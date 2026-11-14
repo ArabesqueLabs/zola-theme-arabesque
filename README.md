@@ -182,7 +182,7 @@ same_as = ["https://github.com/you"]
 | `extra.social.fediverse_creator` | `""` | The author's fediverse account, `"@name@example.social"`: Mastodon credits it on shared links |
 | `extra.social.schema_org` | `true` | The schema.org data |
 | `extra.social.publisher_type` | `"Person"` | Who publishes the site: `"Person"` or `"Organization"`, named by `extra.author`, then `author`, then the title |
-| `extra.social.same_as` | `[]` | Your profiles elsewhere, for schema.org's `sameAs` |
+| `extra.social.same_as` | `[]` | Your profiles elsewhere, for schema.org's `sameAs`, and as `rel="me"` links, so a profile that links back to the site can show that link as verified (Mastodon does) |
 
 ### Everything else
 

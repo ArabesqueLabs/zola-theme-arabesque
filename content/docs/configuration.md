@@ -147,6 +147,8 @@ publisher_type = "Person"                # or "Organization"
 same_as = ["https://github.com/you"]     # your profiles elsewhere
 ```
 
+Each profile in `same_as` is also linked as `rel="me"`, so a profile that links back to the site can show that link as verified, as Mastodon does.
+
 `enabled = false` turns all of the tags off, and `schema_org = false` just the schema.org data.
 
 ## Everything else
