@@ -124,6 +124,8 @@ enabled = true
 # The image shown with a link to a page that has none of its own (`image`
 # under a page's [extra]): a path in static/ or an address, best at
 # 1200×630; "" for none. A page's own alt text is `image_alt` beside `image`.
+# A local image's size goes in the tags, one wider than 1200 pixels is
+# scaled down to that width, and one that isn't there is left out.
 image = ""
 # What the image shows, for people who can't see it.
 image_alt = ""
