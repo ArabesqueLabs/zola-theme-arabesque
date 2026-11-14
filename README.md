@@ -159,7 +159,7 @@ In a page's front matter, under `[extra]`: `toc = true | false` overrides the co
 
 ### Sharing and search
 
-Each page describes itself to the sites and apps that preview links (Open Graph, for Facebook, LinkedIn, Slack, Discord, Mastodon and most others; X's cards) and to search engines (schema.org JSON-LD: the site on the home page, a `BlogPosting` for each dated page, a `WebPage` or `CollectionPage` for the rest). With nothing set, the tags use each page's title, description, date, tags, authors and image, then the site's.
+Each page describes itself to the sites and apps that preview links (Open Graph, for Facebook, LinkedIn, Slack, Discord, Mastodon and most others; X's cards) and to search engines (schema.org JSON-LD: the site on the home page, a `BlogPosting` for each dated page, a `WebPage` or `CollectionPage` for the rest). With nothing set, the tags use each page's title, description, date, tags, authors and image, then the site's. A local image (beside the page, or in static/) is described with its size, scaled down to 1200 pixels wide if it's wider, and left out if the file isn't there; an address or an SVG is used as it is.
 
 ```toml
 [extra.social]

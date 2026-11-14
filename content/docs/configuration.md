@@ -134,7 +134,7 @@ feed_link = true   # an icon linking the Atom feed, after the links
 
 ## Sharing and search
 
-Each page describes itself to the sites and apps that preview links: Open Graph (Facebook, LinkedIn, Slack, Discord, Mastodon and most others) and X's cards. It describes itself to search engines too, with schema.org data: the site on the home page, a blog post for each dated page, and a web page for the rest. With nothing set, the tags use each page's title, description, date, tags, authors and image, then the site's. Set only what you want to add:
+Each page describes itself to the sites and apps that preview links: Open Graph (Facebook, LinkedIn, Slack, Discord, Mastodon and most others) and X's cards. It describes itself to search engines too, with schema.org data: the site on the home page, a blog post for each dated page, and a web page for the rest. With nothing set, the tags use each page's title, description, date, tags, authors and image, then the site's. A local image, beside the page or in static/, is described with its size, and scaled down to 1200 pixels wide if it's wider, so previews load a small file; one that isn't there is left out rather than linked. Set only what you want to add:
 
 ```toml
 [extra.social]

@@ -48,6 +48,21 @@
   {%- if image is starting_with(pat="http") %}{% set image_url = image %}
   {%- elif current is defined and current.extra.image and not image is starting_with(pat="/") %}{% set image_url = current.permalink ~ image %}
   {%- else %}{% set image_url = get_url(path=image) %}{% endif %}
+  {#- A local image (beside the page, or in static/): its size goes in the tags,
+      and one wider than link previews show is scaled down to 1200 pixels wide,
+      keeping its proportions; a file that isn't there leaves the image out
+      rather than linking to nothing. An address or an SVG is used as it is. #}
+  {%- set image_width = 0 %}{% set image_height = 0 %}
+  {%- if not image is starting_with(pat="http") and not image is ending_with(pat=".svg") %}
+  {%- if current is defined and current.extra.image and current.colocated_path and not image is starting_with(pat="/") %}{% set image_path = current.colocated_path ~ image %}
+  {%- else %}{% set image_path = image %}{% endif %}
+  {%- set image_meta = get_image_metadata(path=image_path, allow_missing=true) %}
+  {%- if not image_meta %}{% set image_url = "" %}
+  {%- elif image_meta.width > 1200 and not image is ending_with(pat=".gif") %}
+  {%- set resized = resize_image(path=image_path, width=1200, op="fit_width", format="auto", quality=85) %}
+  {%- set image_url = resized.url %}{% set image_width = resized.width %}{% set image_height = resized.height %}
+  {%- else %}{% set image_width = image_meta.width %}{% set image_height = image_meta.height %}{% endif %}
+  {%- endif %}
   {%- endif %}
   {%- set is_home = current is defined and (current.path == "/" or current.path == "/" ~ lang ~ "/") %}
   {%- set is_post = page is defined and page.date %}
@@ -66,6 +81,10 @@
   {%- endif %}
   {%- if image_url %}
   <meta property="og:image" content="{{ image_url | safe }}">
+  {%- if image_width %}
+  <meta property="og:image:width" content="{{ image_width }}">
+  <meta property="og:image:height" content="{{ image_height }}">
+  {%- endif %}
   {%- if image_alt %}
   <meta property="og:image:alt" content="{{ image_alt }}">
   <meta name="twitter:image:alt" content="{{ image_alt }}">
