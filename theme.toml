@@ -109,7 +109,8 @@ schema_org = true
 # Who publishes the site, for schema.org: "Person" or "Organization". It's
 # named by `extra.author`, then `author`, then the site's title.
 publisher_type = "Person"
-# Your profiles elsewhere, for schema.org's sameAs:
+# Your profiles elsewhere, for schema.org's sameAs, and as rel="me" links
+# (a profile that links back to the site can then show it as verified):
 #   same_as = ["https://github.com/you", "https://example.social/@you"]
 same_as = []
 
