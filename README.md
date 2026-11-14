@@ -155,7 +155,7 @@ animate = true               # it draws itself in once (never under reduced moti
 | `extra.page.page_nav` | `true` | The pages either side: Newer and Older by date, Previous and Next otherwise |
 | `extra.page.back_to_top_after` | `0.5` | Show "Back to top" once the page has scrolled this many screens |
 
-In a page's front matter, under `[extra]`: `toc = true | false` overrides the contents, and `image = "cover.png"` (beside the page, in static/, or an address) is its social image, with `image_alt` for its alt text. `draft = true` adds a Draft badge; `authors = [...]` names who wrote it.
+In a page's front matter, under `[extra]`: `toc = true | false` overrides the contents, and `image = "cover.png"` (beside the page, in static/, or an address) is its social image, with `image_alt` for its alt text. `draft = true` adds a Draft badge; `authors = [...]` names who wrote it. `robots = "noindex"` asks search engines to leave the page out of their results (any value of the robots meta tag works, such as `"noindex, nofollow"`); it works on a section's `_index.md` too.
 
 ### Sharing and search
 

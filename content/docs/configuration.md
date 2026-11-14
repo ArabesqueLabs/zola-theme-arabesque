@@ -105,7 +105,7 @@ animate = true               # let it draw itself in, once
 | `extra.page.page_nav` | true | Links to the pages either side, at the foot |
 | `extra.page.back_to_top_after` | 0.5 | Show "Back to top" once the page has scrolled this many screens |
 
-A page can show or hide its own contents with `toc = true` or `toc = false` under `[extra]` in its front matter, and set a social image with `image = "cover.png"`, with `image_alt` for what it shows.
+A page can show or hide its own contents with `toc = true` or `toc = false` under `[extra]` in its front matter, and set a social image with `image = "cover.png"`, with `image_alt` for what it shows. `robots = "noindex"` keeps a page out of search engines' results, for a page like a legal notice or a thank-you page; it takes any value of the robots meta tag, such as `"noindex, nofollow"`.
 
 ## The footer
 
