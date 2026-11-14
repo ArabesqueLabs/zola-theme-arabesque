@@ -21,6 +21,10 @@
   {%- endif %}
   <meta name="color-scheme" content="light dark">
   <meta name="generator" content="Zola">
+  {#- A page's own instructions to search engines: `robots = "noindex"` under its [extra]. #}
+  {%- if current is defined and current.extra.robots | default(value="") %}
+  <meta name="robots" content="{{ current.extra.robots }}">
+  {%- endif %}
   {#- The saved theme, before first paint, so there's no flash. #}
   <script>try { const t = localStorage.getItem("al-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch {}</script>
   {%- set favicon = config.extra.favicon | default(value="arabesque/theme/favicon.svg") %}
